@@ -45,9 +45,6 @@ const analizar = () => {
             );
             return
         }else{
-        
-
-            
 
             salida.setValue("Análisis Exitoso");
         }

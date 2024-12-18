@@ -8,6 +8,7 @@
     import { ids, usos} from '../index.js'
     import { ErrorReglas } from './error.js';
     import { errores } from '../index.js'
+    
 
     // Importaciones interpreter
 
