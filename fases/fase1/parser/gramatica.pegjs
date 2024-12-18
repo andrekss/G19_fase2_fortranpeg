@@ -1,15 +1,20 @@
 {{
+
+    // Importacion
     
     // let identificadores = []
 
     // import { identificadores } from '../index.js'
-
     import { ids, usos} from '../index.js'
     import { ErrorReglas } from './error.js';
     import { errores } from '../index.js'
+
+    // Importaciones interpreter
+
+    import {Literales}  from '../Interpreter/Produccion/literales.js';
 }}
 
-gramatica = _ producciones+ _ {
+gramatica = _ producciones+ _ {   
 
     let duplicados = ids.filter((item, index) => ids.indexOf(item) !== index);
     if (duplicados.length > 0) {
@@ -23,9 +28,9 @@ gramatica = _ producciones+ _ {
     }
 }
 
-producciones = _ id:identificador _ (literales)? _ "=" _ opciones (_";")? { ids.push(id) }
+producciones = _ id:identificador _ (literales)? _ "=" _ o:opciones (_";")? {  ids.push(id) } // instruccion
 
-opciones = union (_ "/" _ union)*
+opciones = union (_ "/" _ union)* 
 
 union = expresion (_ expresion !(_ literales? _ "=") )*
 
@@ -85,8 +90,8 @@ corchete
 texto
     = [^\[\]]+
 
-literales = '"' stringDobleComilla* '"'
-            / "'" stringSimpleComilla* "'"
+literales = '"' stringDobleComilla* '"'     {}
+            / "'" stringSimpleComilla* "'"  
 
 stringDobleComilla = !('"' / "\\" / finLinea) .
                     / "\\" escape
