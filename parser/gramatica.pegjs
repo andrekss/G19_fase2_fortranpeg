@@ -9,10 +9,8 @@
     import { ErrorReglas } from './error.js';
     import { errores } from '../index.js'
     
-
-    // Importaciones interpreter
-
-    import {Literales}  from '../Interpreter/Produccion/literales.js';
+    // Importaciones Visitor
+    import { Produccion, Or } from "../Visitor/Elementos/Reglas.js";
 }}
 
 gramatica = _ producciones+ _ {   
@@ -29,9 +27,9 @@ gramatica = _ producciones+ _ {
     }
 }
 
-producciones = _ id:identificador _ (literales)? _ "=" _ o:opciones (_";")? {  ids.push(id) } // instruccion
+producciones = _ id:identificador _ a:(literales)? _ "=" _ o:opciones (_";")? {  ids.push(id);  return new Produccion(id,a,o); } // instruccion
 
-opciones = union (_ "/" _ union)* 
+opciones = inicio:union final:(_ "/" _ union)* { return new Or([inicio, ...final]); }
 
 union = expresion (_ expresion !(_ literales? _ "=") )*
 
