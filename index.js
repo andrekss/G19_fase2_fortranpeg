@@ -1,7 +1,7 @@
 import * as monaco from 'https://cdn.jsdelivr.net/npm/monaco-editor@0.50.0/+esm';
 import { parse } from './parser/gramatica.js';
 import { ErrorReglas } from './parser/error.js';
-import Regla from './Visitor/Regla.js';
+
 
 
 export let ids = []
@@ -28,6 +28,44 @@ const salida = monaco.editor.create(
         automaticLayout: true
     }
 );
+
+//boton
+document.addEventListener("DOMContentLoaded", function () {
+    const boton = document.getElementById("boton_1");
+    boton.addEventListener("click", function () {
+
+    
+        const contenido = "te amo"
+
+
+       
+        generarArchivo('gramatica.txt', contenido);
+    });
+});
+
+//funcion de crear achivoos
+
+
+function generarArchivo(nombreArchivo, contenido) {
+    
+    const blob = new Blob([contenido], { type: 'text/plain' });
+
+   
+    const url = URL.createObjectURL(blob);
+
+    
+    const enlace = document.createElement('a');
+    enlace.href = url;
+    enlace.download = nombreArchivo;
+
+    
+    document.body.appendChild(enlace);
+    enlace.click();
+
+    
+    document.body.removeChild(enlace);
+    URL.revokeObjectURL(url);
+}
 
 let decorations = [];
 
