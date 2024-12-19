@@ -12,7 +12,7 @@ export let errores = []
 const editor = monaco.editor.create(
     document.getElementById('editor'), {
         value: '',
-        language: 'java',
+        language: 'javascript',
         theme: 'tema',
         automaticLayout: true
     }
@@ -27,6 +27,15 @@ const salida = monaco.editor.create(
         automaticLayout: true
     }
 );
+
+
+const boton = document.getElementById("boton")
+
+boton.addEventListener("click",function() {
+
+    console.log("hola");
+
+});
 
 let decorations = [];
 
@@ -115,4 +124,9 @@ style.innerHTML = `
         background-size: contain;
     }
 `;
+
+//boton generar 
+
+
+ 
 document.head.appendChild(style);
