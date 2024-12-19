@@ -10,7 +10,7 @@
     import { errores } from '../index.js'
     
     // Importaciones Visitor
-    import { Produccion, Or, Union, Varios, Etiqueta } from "../Visitor/Elementos/Reglas.js";
+    import { Produccion, Or, Union, Varios, Etiqueta, Expresion, ExpresionParseada } from "../Visitor/Elementos/Reglas.js";
 }}
 
 gramatica = _ producciones+ _ {   
@@ -33,16 +33,16 @@ opciones = inicio:union final:(_ "/" _ union)* { return new Or([inicio, ...final
 
 union = inicio:expresion final:(_ expresion !(_ literales? _ "=") )* { return new Union([inicio, ...final]); }
 
-expresion  = a:(etiqueta/varios)? _ exp:expresiones _ ([?+*]/conteo)?  { return new Varios(a,exp)}
+expresion  = a:(etiqueta/varios)? _ exp:expresiones _ cont:([?+*]/conteo)?  { return new Expresion(a, exp, cont)}
 
-etiqueta = ("@")? _ id:identificador _ ":" (varios)?
+etiqueta = pluck:("@")? _ id:identificador _ ":" varios:(varios)? { return new Etiqueta(pluck, id, varios) }
 
-varios = ("!"/"$"/"@"/"&")
-
-expresiones  =  id:identificador { usos.push(id) }
-                / literales "i"?
-                / "(" _ opciones _ ")"
-                / corchetes "i"?
+varios = pre:("!"/"$"/"@"/"&") { return new Varios(pre) }
+// queso
+expresiones  =  exp:identificador { usos.push(id); return new ExpresionParseada(exp)}
+                / exp:literales "i"?
+                / "(" _ exp:opciones _ ")"
+                / exp:corchetes "i"?
                 / "."
                 / "!."
 
