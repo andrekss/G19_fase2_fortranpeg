@@ -80,7 +80,18 @@ class ExpresionParseada extends Regla {
 }
 
 
+class Rango extends Regla {
+    constructor(inicio, fin){
+        this.inicio = inicio
+        this.fin = fin
+    }
 
-export {Produccion, Or, Union, Varios, Etiqueta, Expresion, ExpresionParseada};
+    accept(visitor){
+        visitor.VisitarRango(this);
+    }
+}
+
+
+export {Produccion, Or, Union, Varios, Etiqueta, Expresion, ExpresionParseada, Rango};
 
 // Seguir escribiendo clases ...

@@ -51,8 +51,22 @@ class TokenizadorVisitante extends Visitor {
     }
 
     VisitarEtiqueta(Regla){
-
+      return Regla
     }
+
+    VisitarExpresiones(Regla){
+      return Regla.expresion.accept(this);
+    }
+
+    VisitarExpresionParseada(Regla){
+      return Regla.expresion.accept(this);
+    }
+
+    VisitarRango(Regla){
+      return ;
+    }
+
+
 
 }
 

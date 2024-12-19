@@ -40,13 +40,14 @@ etiqueta = pluck:("@")? _ id:identificador _ ":" varios:(varios)? { return new E
 varios = pre:("!"/"$"/"@"/"&") { return new Varios(pre) }
 // queso
 expresiones  =  exp:identificador { usos.push(id); return new ExpresionParseada(exp)}
-                / exp:literales "i"?
-                / "(" _ exp:opciones _ ")"
-                / exp:corchetes "i"?
-                / "."
-                / "!."
+                / exp:literales "i"? { return new ExpresionParseada(exp);}
+                / "(" _ exp:opciones _ ")" { return new ExpresionParseada(exp); }
+                / exp:corchetes "i"? { return new ExpresionParseada(exp); }
+                / exp:"." { return new ExpresionParseada(exp)}
+                / exp:"!." { return new ExpresionParseada(exp)}
 
 // conteo = "|" parteconteo _ (_ delimitador )? _ "|"
+
 
 conteo = "|" _ (numero / id:identificador) _ "|"
         / "|" _ (numero / id:identificador)? _ ".." _ (numero / id2:identificador)? _ "|"
@@ -89,8 +90,8 @@ corchete
 texto
     = [^\[\]]+
 
-literales = '"' stringDobleComilla* '"'     {}
-            / "'" stringSimpleComilla* "'"  
+literales = '"' cadena:stringDobleComilla* '"'     {}
+            / "'" cadena:stringSimpleComilla* "'"  
 
 stringDobleComilla = !('"' / "\\" / finLinea) .
                     / "\\" escape
