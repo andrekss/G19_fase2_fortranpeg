@@ -34,10 +34,22 @@ class Union extends Regla {
     }
 }
 
+
+class Expresion extends Regla {
+    constructor(prefijo, expresiones, conteo){
+        this.prefijo = prefijo;
+        this.expresiones = expresiones
+        this.conteo = conteo
+    }
+
+    accept(visitor){
+        visitor.VisitarExpresiones(this);
+    }
+}
+
 class Varios extends Regla {
-    constructor( Varios,expresion) {
-        this.expresion = expresion; // Expresiones
-        this.Varios = Varios; // Puede ser opcional
+    constructor(prefijo) {
+        this.prefijo = prefijo;
     }
 
     accept(visitor) {
@@ -46,9 +58,10 @@ class Varios extends Regla {
 }
 
 class Etiqueta extends Regla {
-    constructor(id,expresion) {
-        this.expresion = expresion; // Expresiones
+    constructor(pluck, id, varios) {
+        this.pluck = pluck; // Expresiones
         this.id = id; // Puede ser opcional
+        this.varios = varios;
     }
 
     accept(visitor) {
@@ -56,8 +69,18 @@ class Etiqueta extends Regla {
     }
 }
 
+class ExpresionParseada extends Regla {
+    constructor(expresion){
+        this.expresion = expresion;
+    }
+
+    accept(visitor){
+        visitor.VisitarExpresionParseada(this);
+    }
+}
 
 
-export {Produccion, Or, Union, Varios, Etiqueta};
+
+export {Produccion, Or, Union, Varios, Etiqueta, Expresion, ExpresionParseada};
 
 // Seguir escribiendo clases ...
