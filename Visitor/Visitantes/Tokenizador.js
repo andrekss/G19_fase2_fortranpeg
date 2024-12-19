@@ -35,7 +35,7 @@ class TokenizadorVisitante extends Visitor {
     // Reglas
 
     VisitarProduccion(Regla) {
-        return Regla.expresion.accept(this);  // Ejecutamos la expresión
+      return Regla.expresion.accept(this);  // Ejecutamos la expresión
     }
 
     VisitarOr(Regla) {
@@ -46,7 +46,14 @@ class TokenizadorVisitante extends Visitor {
       return Regla.expresion.map((expr) => expr.accept(this)).join('\n');
     }
 
-    
+    VisitarVarios(Regla){
+      return Regla
+    }
+
+    VisitarEtiqueta(Regla){
+
+    }
+
 }
 
 export{TokenizadorVisitante};

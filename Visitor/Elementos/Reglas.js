@@ -34,10 +34,21 @@ class Union extends Regla {
     }
 }
 
-class Pluck extends Regla {
-    constructor(expresion, pluck) {
-        this.expresion = expresion;
-        this.pluck = pluck; // Puede ser opcional
+class Varios extends Regla {
+    constructor( Varios,expresion) {
+        this.expresion = expresion; // Expresiones
+        this.Varios = Varios; // Puede ser opcional
+    }
+
+    accept(visitor) {
+        visitor.VisitarUnion(this);
+    }
+}
+
+class Etiqueta extends Regla {
+    constructor(id,expresion) {
+        this.expresion = expresion; // Expresiones
+        this.id = id; // Puede ser opcional
     }
 
     accept(visitor) {
@@ -47,7 +58,6 @@ class Pluck extends Regla {
 
 
 
-
-export {Produccion, Or, Union, Pluck};
+export {Produccion, Or, Union, Varios, Etiqueta};
 
 // Seguir escribiendo clases ...

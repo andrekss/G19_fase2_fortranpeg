@@ -2,8 +2,8 @@ class Visitor {
     VisitarProduccion(Regla){} // Inicial
 	VisitarOr(Regla){} // 1
 	VisitarUnion(Regla){} // 2
-	VisitarPluck(Regla){}
-	VisitarLabel(Regla){} // 3 
+	VisitarEtiqueta(Regla){}
+	VisitarVarios(Regla){}
 	VisitarExpresiones(Regla){} // 4
 	VisitarQuantifier(Regla){}
 	VisitarParsingExpression(Regla){}
