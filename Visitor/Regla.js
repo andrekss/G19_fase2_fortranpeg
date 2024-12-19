@@ -4,4 +4,4 @@ class Regla {
     }
 }
 
-export {Regla}
+export default Regla
