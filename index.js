@@ -38,7 +38,7 @@ const analizar = () => {
     usos.length = 0
     errores.length = 0
     try {
-        const cst = parse(entrada)
+        const cst = parse(entrada);
 
         if(errores.length > 0){
             salida.setValue(

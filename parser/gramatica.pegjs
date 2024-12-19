@@ -10,7 +10,7 @@
     import { errores } from '../index.js'
     
     // Importaciones Visitor
-    import { Produccion, Or } from "../Visitor/Elementos/Reglas.js";
+    import { Produccion, Or, Union } from "../Visitor/Elementos/Reglas.js";
 }}
 
 gramatica = _ producciones+ _ {   
@@ -31,7 +31,7 @@ producciones = _ id:identificador _ a:(literales)? _ "=" _ o:opciones (_";")? { 
 
 opciones = inicio:union final:(_ "/" _ union)* { return new Or([inicio, ...final]); }
 
-union = expresion (_ expresion !(_ literales? _ "=") )*
+union = inicio:expresion final:(_ expresion !(_ literales? _ "=") )* { return new Union([inicio, ...final]); }
 
 expresion  = (etiqueta/varios)? _ expresiones _ ([?+*]/conteo)?
 
