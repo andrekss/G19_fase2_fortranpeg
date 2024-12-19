@@ -12,7 +12,7 @@ export let errores = []
 const editor = monaco.editor.create(
     document.getElementById('editor'), {
         value: '',
-        language: 'javascript',
+        language: 'java',
         theme: 'tema',
         automaticLayout: true
     }
@@ -27,15 +27,6 @@ const salida = monaco.editor.create(
         automaticLayout: true
     }
 );
-
-
-const boton = document.getElementById("boton")
-
-boton.addEventListener("click",function() {
-
-    console.log("hola");
-
-});
 
 let decorations = [];
 
@@ -54,10 +45,11 @@ const analizar = () => {
             );
             return
         }else{
+
             salida.setValue("Análisis Exitoso");
         }
 
-        // salida.setValue("Análisis Exitoso");
+
         // Limpiar decoraciones previas si la validación es exitosa
         decorations = editor.deltaDecorations(decorations, []);
     } catch (e) {
@@ -124,9 +116,6 @@ style.innerHTML = `
         background-size: contain;
     }
 `;
-
-//boton generar 
-
-
- 
 document.head.appendChild(style);
+
+
