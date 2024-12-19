@@ -1,18 +1,18 @@
 class Visitor {
-    visitProduccion(Regla){} // Inicial
-	visitOr(Regla){} // 1
-	visitUnion(Regla){} // 2
-	visitPluck(Regla){}
-	visitLabel(Regla){} // 3 
-	visitExpresiones(Regla){} // 4
-	visitQuantifier(Regla){}
-	visitParsingExpression(Regla){}
-	visitGrupos(Regla){}  // 5
-	visitLiterales(Regla){} // 6
-	visitRango(Regla){} // 7
-	visitEntradaRango(Regla){} // 8
-	visitIdentificador(Regla){} // 9
-	visitNumber(Regla){}
+    VisitarProduccion(Regla){} // Inicial
+	VisitarOr(Regla){} // 1
+	VisitarUnion(Regla){} // 2
+	VisitarPluck(Regla){}
+	VisitarLabel(Regla){} // 3 
+	VisitarExpresiones(Regla){} // 4
+	VisitarQuantifier(Regla){}
+	VisitarParsingExpression(Regla){}
+	VisitarGrupos(Regla){}  // 5
+	VisitarLiterales(Regla){} // 6
+	VisitarRango(Regla){} // 7
+	VisitarEntradaRango(Regla){} // 8
+	VisitarIdentificador(Regla){} // 9
+	VisitarNumber(Regla){}
 }
 
 export {Visitor};

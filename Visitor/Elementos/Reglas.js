@@ -1,28 +1,53 @@
-import { Regla } from "../Regla";
+import { Regla } from "../Regla.js";
 
 // Para las gramáticas
 
-class Or extends Regla {
-    constructor(id) {
-        super();
+class Produccion extends Regla {
+    constructor(id,alias, expresion ) {
         this.id = id;
+        this.expresion = expresion;
+        this.alias = alias;
     }
 
     accept(visitor) {
-        visitor.visitOr(this);
+        return visitor.VisitarProduccion(this);
+    }
+}
+
+class Or extends Regla {
+    constructor(expresion) {
+        this.expresion = expresion; // Lista de opciones para hacer la decision del or
+    }
+
+    accept(visitor) {
+        visitor.VisitarOr(this);
     }
 }
 
 class Union extends Regla {
-    constructor() {
-        super();
+    constructor(expresion) {
+        this.expresion = expresion; // Lista de concatenación
     }
 
     accept(visitor) {
-        visitor.visitUnion(this);
+        visitor.VisitarUnion(this);
     }
 }
 
-export {Or, Union};
+class Pluck extends Regla {
+    constructor(expresion, pluck) {
+        this.expresion = expresion;
+        this.pluck = pluck; // Puede ser opcional
+    }
+
+    accept(visitor) {
+        visitor.VisitarUnion(this);
+    }
+}
+
+
+
+
+export {Produccion, Or, Union, Pluck};
 
 // Seguir escribiendo clases ...

@@ -2,9 +2,6 @@ import { Visitor } from "../Visitante";
 
 class TokenizadorVisitante extends Visitor {
 
-
-
-
     Generador_Tokens(gramáticas){
 
         let contenedor ="";
@@ -31,19 +28,22 @@ class TokenizadorVisitante extends Visitor {
         END PROGRAM Main
         `
 
-
         gramáticas.forEach(Regla => {
             Regla.accept(this);
         });
     }
     // Reglas
 
-    visitProduccion(Regla) {
-        // Funcionalidad
+    VisitarProduccion(Regla) {
+        return Regla.expresion.accept(this);  // Ejecutamos la expresión
     }
 
-    visitOr(Regla) {
-        // Funcionalidad
+    VisitarOr(Regla) {
+      return Regla.expresion.map((expr) => expr.accept(this)).join('\n');
+    }
+
+    VisitarUnion(Regla){
+      return Regla.expresion.map((expr) => expr.accept(this)).join('\n');
     }
 
     
