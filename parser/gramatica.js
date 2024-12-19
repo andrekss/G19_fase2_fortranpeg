@@ -15,7 +15,7 @@
     import { errores } from '../index.js'
     
     // Importaciones Visitor
-    import { Produccion, Or } from "../Visitor/Elementos/Reglas.js";
+    import { Produccion, Or, Union, Varios, Etiqueta } from "../Visitor/Elementos/Reglas.js";
 
 function peg$subclass(child, parent) {
   function C() { this.constructor = child; }
@@ -282,20 +282,22 @@ function peg$parse(input, options) {
 };
   var peg$f1 = function(id, a, o) {  ids.push(id);  return new Produccion(id,a,o); };
   var peg$f2 = function(inicio, final) { return new Or([inicio, ...final]); };
-  var peg$f3 = function(id) { usos.push(id) };
-  var peg$f4 = function(contenido) {
+  var peg$f3 = function(inicio, final) { return new Union([inicio, ...final]); };
+  var peg$f4 = function() { return };
+  var peg$f5 = function(id) { usos.push(id) };
+  var peg$f6 = function(contenido) {
         return `Entrada válida: [${input}]`;
     };
-  var peg$f5 = function(inicio, fin) {
+  var peg$f7 = function(inicio, fin) {
         if (inicio.charCodeAt(0) > fin.charCodeAt(0)) {
             throw new Error(`Rango inválido: [${inicio}-${fin}]`);
 
         }
         return `${inicio}-${fin}`;
     };
-  var peg$f6 = function() { return text()};
-  var peg$f7 = function() {};
-  var peg$f8 = function() { return text() };
+  var peg$f8 = function() { return text()};
+  var peg$f9 = function() {};
+  var peg$f10 = function() { return text() };
   var peg$currPos = options.peg$currPos | 0;
   var peg$savedPos = peg$currPos;
   var peg$posDetailsCache = [{ line: 1, column: 1 }];
@@ -712,8 +714,8 @@ function peg$parse(input, options) {
           s3 = peg$FAILED;
         }
       }
-      s1 = [s1, s2];
-      s0 = s1;
+      peg$savedPos = s0;
+      s0 = peg$f3(s1, s2);
     } else {
       peg$currPos = s0;
       s0 = peg$FAILED;
@@ -750,8 +752,8 @@ function peg$parse(input, options) {
       if (s5 === peg$FAILED) {
         s5 = null;
       }
-      s1 = [s1, s2, s3, s4, s5];
-      s0 = s1;
+      peg$savedPos = s0;
+      s0 = peg$f4();
     } else {
       peg$currPos = s0;
       s0 = peg$FAILED;
@@ -825,7 +827,7 @@ function peg$parse(input, options) {
     s1 = peg$parseidentificador();
     if (s1 !== peg$FAILED) {
       peg$savedPos = s0;
-      s1 = peg$f3(s1);
+      s1 = peg$f5(s1);
     }
     s0 = s1;
     if (s0 === peg$FAILED) {
@@ -1208,7 +1210,7 @@ function peg$parse(input, options) {
         }
         if (s3 !== peg$FAILED) {
           peg$savedPos = s0;
-          s0 = peg$f4(s2);
+          s0 = peg$f6(s2);
         } else {
           peg$currPos = s0;
           s0 = peg$FAILED;
@@ -1242,7 +1244,7 @@ function peg$parse(input, options) {
         s3 = peg$parsecaracter();
         if (s3 !== peg$FAILED) {
           peg$savedPos = s0;
-          s0 = peg$f5(s1, s3);
+          s0 = peg$f7(s1, s3);
         } else {
           peg$currPos = s0;
           s0 = peg$FAILED;
@@ -1272,7 +1274,7 @@ function peg$parse(input, options) {
     }
     if (s1 !== peg$FAILED) {
       peg$savedPos = s0;
-      s1 = peg$f6();
+      s1 = peg$f8();
     }
     s0 = s1;
 
@@ -1398,7 +1400,7 @@ function peg$parse(input, options) {
       }
       if (s3 !== peg$FAILED) {
         peg$savedPos = s0;
-        s0 = peg$f7();
+        s0 = peg$f9();
       } else {
         peg$currPos = s0;
         s0 = peg$FAILED;
@@ -1723,7 +1725,7 @@ function peg$parse(input, options) {
         }
       }
       peg$savedPos = s0;
-      s0 = peg$f8();
+      s0 = peg$f10();
     } else {
       peg$currPos = s0;
       s0 = peg$FAILED;

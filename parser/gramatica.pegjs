@@ -10,7 +10,7 @@
     import { errores } from '../index.js'
     
     // Importaciones Visitor
-    import { Produccion, Or, Union } from "../Visitor/Elementos/Reglas.js";
+    import { Produccion, Or, Union, Varios, Etiqueta } from "../Visitor/Elementos/Reglas.js";
 }}
 
 gramatica = _ producciones+ _ {   
@@ -33,7 +33,7 @@ opciones = inicio:union final:(_ "/" _ union)* { return new Or([inicio, ...final
 
 union = inicio:expresion final:(_ expresion !(_ literales? _ "=") )* { return new Union([inicio, ...final]); }
 
-expresion  = (etiqueta/varios)? _ expresiones _ ([?+*]/conteo)?
+expresion  = a:(etiqueta/varios)? _ exp:expresiones _ ([?+*]/conteo)?  { return new Varios(a,exp)}
 
 etiqueta = ("@")? _ id:identificador _ ":" (varios)?
 
