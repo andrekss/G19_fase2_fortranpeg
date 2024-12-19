@@ -4,6 +4,7 @@ import { Regla } from "../Regla.js";
 
 class Produccion extends Regla {
     constructor(id,alias, expresion ) {
+        super();
         this.id = id;
         this.expresion = expresion;
         this.alias = alias;
@@ -16,6 +17,7 @@ class Produccion extends Regla {
 
 class Or extends Regla {
     constructor(expresion) {
+        super();
         this.expresion = expresion; // Lista de opciones para hacer la decision del or
     }
 
@@ -26,6 +28,7 @@ class Or extends Regla {
 
 class Union extends Regla {
     constructor(expresion) {
+        super();
         this.expresion = expresion; // Lista de concatenación
     }
 
@@ -37,6 +40,7 @@ class Union extends Regla {
 
 class Expresion extends Regla {
     constructor(prefijo, expresiones, conteo){
+        super();
         this.prefijo = prefijo;
         this.expresiones = expresiones
         this.conteo = conteo
@@ -49,6 +53,7 @@ class Expresion extends Regla {
 
 class Varios extends Regla {
     constructor(prefijo) {
+        super();
         this.prefijo = prefijo;
     }
 
@@ -59,6 +64,7 @@ class Varios extends Regla {
 
 class Etiqueta extends Regla {
     constructor(pluck, id, varios) {
+        super();
         this.pluck = pluck; // Expresiones
         this.id = id; // Puede ser opcional
         this.varios = varios;
@@ -71,6 +77,7 @@ class Etiqueta extends Regla {
 
 class ExpresionParseada extends Regla {
     constructor(expresion){
+        super();
         this.expresion = expresion;
     }
 
@@ -82,6 +89,7 @@ class ExpresionParseada extends Regla {
 
 class Rango extends Regla {
     constructor(inicio, fin){
+        super();
         this.inicio = inicio
         this.fin = fin
     }
@@ -92,6 +100,18 @@ class Rango extends Regla {
 }
 
 
-export {Produccion, Or, Union, Varios, Etiqueta, Expresion, ExpresionParseada, Rango};
+class Literales extends Regla {
+    constructor(Literal){
+        super();
+        this.Literal = Literal;
+    }
+
+    accept(visitor){
+        visitor.VisitarRango(this);
+    }
+}
+
+
+export {Produccion, Or, Union, Varios, Etiqueta, Expresion, ExpresionParseada, Rango, Literales};
 
 // Seguir escribiendo clases ...

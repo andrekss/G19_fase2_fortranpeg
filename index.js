@@ -1,12 +1,14 @@
 import * as monaco from 'https://cdn.jsdelivr.net/npm/monaco-editor@0.50.0/+esm';
 import { parse } from './parser/gramatica.js';
 import { ErrorReglas } from './parser/error.js';
+import { TokenizadorVisitante } from './Visitor/Visitantes/Tokenizador.js';
 
 
 
 export let ids = []
 export let usos = []
 export let errores = []
+export let cst = [];
 
 
 // Crear el editor principal
@@ -33,13 +35,14 @@ const salida = monaco.editor.create(
 document.addEventListener("DOMContentLoaded", function () {
     const boton = document.getElementById("boton_1");
     boton.addEventListener("click", function () {
-
     
+        const tokenizador = new TokenizadorVisitante(cst);
+        const cadena = tokenizador.Generador_Tokens()
         const contenido = "te amo"
 
 
-       
-        generarArchivo('gramatica.txt', contenido);
+   
+        generarArchivo('gramatica.f90', cadena);
     });
 });
 
@@ -76,7 +79,7 @@ const analizar = () => {
     usos.length = 0
     errores.length = 0
     try {
-        const cst = parse(entrada);
+        cst = parse(entrada);
 
         if(errores.length > 0){
             salida.setValue(

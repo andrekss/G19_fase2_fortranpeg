@@ -25,6 +25,29 @@ CONTAINS ! Permite declarar y definir funciones o subrutinas que estarán dispon
     END IF
 
 
+! Bucle tipo while
+    do while (.true.)
+        read *, opcion
+        if (opcion == 0) then
+            print *, ""
+            exit
+        end if
+
+        ! "Switch" en Fortran usando select case
+        select case(opcion)
+            case(1)
+                print *, "La opción es 1"
+            case(2)
+                print *, "La opción es 2"
+            case(3)
+                print *, "La opción es 3"
+            case default
+                print *, "Opción no reconocida"
+        end select
+        print *, "Ingrese otro número (0 para salir):"
+    end do
+
+
   END SUBROUTINE Nextsym
 
 END PROGRAM Main

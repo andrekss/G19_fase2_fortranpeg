@@ -10,10 +10,10 @@
     import { errores } from '../index.js'
     
     // Importaciones Visitor
-    import { Produccion, Or, Union, Varios, Etiqueta, Expresion, ExpresionParseada } from "../Visitor/Elementos/Reglas.js";
+    import { Produccion, Or, Union, Varios, Etiqueta, Expresion, ExpresionParseada, Literales } from "../Visitor/Elementos/Reglas.js";
 }}
 
-gramatica = _ producciones+ _ {   
+gramatica = _ prods:producciones+ _ {   
 
     let duplicados = ids.filter((item, index) => ids.indexOf(item) !== index);
     if (duplicados.length > 0) {
@@ -25,6 +25,8 @@ gramatica = _ producciones+ _ {
     if (noEncontrados.length > 0) {
         errores.push(new ErrorReglas("Regla no encontrada: " + noEncontrados[0]));
     }
+
+    return prods;
 }
 
 producciones = _ id:identificador _ a:(literales)? _ "=" _ o:opciones (_";")? {  ids.push(id);  return new Produccion(id,a,o); } // instruccion
@@ -90,8 +92,8 @@ corchete
 texto
     = [^\[\]]+
 
-literales = '"' cadena:stringDobleComilla* '"'     {}
-            / "'" cadena:stringSimpleComilla* "'"  
+literales = '"' cadena:stringDobleComilla* '"'     { return new Literales(cadena); }
+            / "'" cadena:stringSimpleComilla* "'"  { return new Literales(cadena); }
 
 stringDobleComilla = !('"' / "\\" / finLinea) .
                     / "\\" escape
