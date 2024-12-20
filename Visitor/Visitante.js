@@ -14,6 +14,7 @@ class Visitor {
 	VisitarIdentificador(Regla){} // 9
 	VisitarNumber(Regla){}
 	
+	
 }
 
 export {Visitor};

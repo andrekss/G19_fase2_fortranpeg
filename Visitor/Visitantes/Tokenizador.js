@@ -81,6 +81,44 @@ class TokenizadorVisitante extends Visitor {
 
     }
 
+
+      generadorCaracteres(caracteres) {
+        if (caracteres.length === 0) return '';
+        return `
+    if (findloc([${caracteres
+        .map((char) => `"${char}"`)
+        .join(', ')}], input(i:i), 1) > 0) then
+        lexeme = input(cursor:i)
+        cursor = i + 1
+        return
+    end if
+        `;
+    }
+
+
+      VisitarClase(node) {
+        return `
+    i = cursor
+    ${this.generadorCaracteres(
+        node.chars.filter((node) => typeof node === 'string')
+    )}
+    ${node.chars
+        .filter((node) => node instanceof Rango)
+        .map((range) => range.accept(this))
+        .join('\n')}
+        `;
+    }
+
+    VisitarRango(node) {
+        return `
+    if (input(i:i) >= "${node.bottom}" .and. input(i:i) <= "${node.top}") then
+        lexeme = input(cursor:i)
+        cursor = i + 1
+        return
+    end if
+        `;
+    }
+
 }
 
 export{TokenizadorVisitante};
