@@ -41,12 +41,12 @@ etiqueta = pluck:("@")? _ id:identificador _ ":" varios:(varios)? { return new E
 
 varios = pre:("!"/"$"/"@"/"&") { return new Varios(pre) }
 // queso
-expresiones  =  exp:identificador { usos.push(id); return new ExpresionParseada(exp)}
-                / exp:literales "i"? { return new ExpresionParseada(exp);}
+expresiones  =  exp:identificador          { usos.push(id); return new ExpresionParseada(exp); }
+                / exp:literales "i"?       { return new ExpresionParseada(exp);}
                 / "(" _ exp:opciones _ ")" { return new ExpresionParseada(exp); }
-                / exp:corchetes "i"? { return new ExpresionParseada(exp); }
-                / exp:"." { return new ExpresionParseada(exp)}
-                / exp:"!." { return new ExpresionParseada(exp)}
+                / exp:corchetes "i"?       { return new ExpresionParseada(exp); }
+                / exp:"."                  { return new ExpresionParseada(exp); }
+                / exp:"!."                 { return new ExpresionParseada(exp); }
 
 // conteo = "|" parteconteo _ (_ delimitador )? _ "|"
 

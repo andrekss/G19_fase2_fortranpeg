@@ -22,7 +22,7 @@ class Or extends Regla {
     }
 
     accept(visitor) {
-        visitor.VisitarOr(this);
+        return visitor.VisitarOr(this);
     }
 }
 
@@ -33,7 +33,7 @@ class Union extends Regla {
     }
 
     accept(visitor) {
-        visitor.VisitarUnion(this);
+        return visitor.VisitarUnion(this);
     }
 }
 
@@ -47,7 +47,7 @@ class Expresion extends Regla {
     }
 
     accept(visitor){
-        visitor.VisitarExpresiones(this);
+        return visitor.VisitarExpresiones(this);
     }
 }
 
@@ -58,7 +58,7 @@ class Varios extends Regla {
     }
 
     accept(visitor) {
-        visitor.VisitarUnion(this);
+        return visitor.VisitarUnion(this);
     }
 }
 
@@ -71,7 +71,7 @@ class Etiqueta extends Regla {
     }
 
     accept(visitor) {
-        visitor.VisitarUnion(this);
+        return visitor.VisitarUnion(this);
     }
 }
 
@@ -82,7 +82,7 @@ class ExpresionParseada extends Regla {
     }
 
     accept(visitor){
-        visitor.VisitarExpresionParseada(this);
+        return visitor.VisitarExpresionParseada(this);
     }
 }
 
@@ -95,7 +95,7 @@ class Rango extends Regla {
     }
 
     accept(visitor){
-        visitor.VisitarRango(this);
+        return visitor.VisitarRango(this);
     }
 }
 
@@ -107,7 +107,7 @@ class Literales extends Regla {
     }
 
     accept(visitor){
-        visitor.VisitarRango(this);
+        return visitor.VisitarRango(this);
     }
 }
 

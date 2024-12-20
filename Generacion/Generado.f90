@@ -1,7 +1,7 @@
-PROGRAM Main 
+PROGRAM Main
   IMPLICIT NONE ! Desactiva la asignación implicita de las variables
 
-  CHARACTER(LEN=50) :: CadenaE ! variable tipo caracter del mensaje
+  CHARACTER(LEN=50) :: CadenaE ! Variable tipo caracter del mensaje
 
   ! Solicitar un mensaje al usuario
   PRINT *, "Introduce una cadena:"
@@ -9,44 +9,33 @@ PROGRAM Main
 
   CALL Nextsym(CadenaE) ! Llamada
 
-CONTAINS ! Permite declarar y definir funciones o subrutinas que estarán disponibles solo dentro del programa o módulo en el que están definidas.
+  CONTAINS ! Permite declarar y definir funciones o subrutinas que estarán disponibles solo dentro del programa o módulo en el que están definidas.
 
   ! Definición de la subrutina
   SUBROUTINE Nextsym(Cadena)
     IMPLICIT NONE
+    CHARACTER(LEN=50), INTENT(IN) :: Cadena ! Declarar Cadena como entrada (solo lectura)
+    INTEGER :: opcion = 1
 
-    ! Len=* <- Se adapta  al tamaño del mensaje  INTENT(IN) <-- Variable de entrada
-    CHARACTER(LEN=*), INTENT(IN) :: Cadena
-    
-    IF (TRIM(ADJUSTL(Cadena)) == "hola") THEN
-        PRINT *, "Funcionó"
-    ELSE
-      PRINT *, "No funcionó"
-    END IF
+    PRINT *, "Cadena: ", TRIM(Cadena)
+    PRINT *, "Ingrese un número (0 para salir):"
 
-
-! Bucle tipo while
-    do while (.true.)
-        read *, opcion
-        if (opcion == 0) then
-            print *, ""
-            exit
-        end if
-
-        ! "Switch" en Fortran usando select case
-        select case(opcion)
-            case(1)
-                print *, "La opción es 1"
-            case(2)
-                print *, "La opción es 2"
-            case(3)
-                print *, "La opción es 3"
-            case default
-                print *, "Opción no reconocida"
-        end select
-        print *, "Ingrese otro número (0 para salir):"
-    end do
-
+    ! Bucle tipo while
+    DO WHILE (.true.)
+        SELECT CASE(opcion)
+            CASE(1)
+                PRINT *, "La opción es 1"
+            CASE(2)
+                PRINT *, "La opción es 2"
+            CASE(3)
+                PRINT *, "La opción es 3"
+                exit
+            CASE DEFAULT
+                PRINT *, "Opción no reconocida"
+                exit
+        END SELECT
+        opcion = opcion+1
+    END DO
 
   END SUBROUTINE Nextsym
 

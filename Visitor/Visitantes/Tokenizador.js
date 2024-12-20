@@ -9,18 +9,19 @@ class TokenizadorVisitante extends Visitor {
 
 
     return `
-    module tokenizador
-    implicit none
-    
-    contains
-    function nextSym(input, cursor) result(lexeme)
-    
+      module Main
+        IMPLICIT NONE ! Desactiva la asignación implicita de las variables
+        contains
+        function Nextsym(Cadena, indice)
+          character(len=*), intent(in) :: Cadena
+          integer, intent(inout) :: indice
+          character(len=:), allocatable :: lexema
+
+          INTEGER :: opcion = 1 ! Iniciamos con la primer instruccion del or
         ${gramáticas.map((produccion) => produccion.accept(this)).join('\n')}
-    
-        print *, "error lexico en col ", cursor, ', "'//input(cursor:cursor)//'"'
-        lexeme = "ERROR"
-    end function nextSym
-    end module tokenizador 
+        END function Nextsym
+
+      END module Main
             `;
     }
     // Reglas
@@ -31,21 +32,24 @@ class TokenizadorVisitante extends Visitor {
 
 
     VisitarOr(Regla) {
+      return `
+        DO WHILE (.true.)
+          SELECT CASE(opcion)
+            ${Regla.expresion.map((expr, caso) => `CASE ${caso + 1}: ${expr.accept(this)}`).join('\n')}
+          END SELECT
+          opcion = opcion+1
+        END DO  
+      `;
+    }    
 
-      let or =`
-      
+    VisitarUnion(Regla){ // Concatenaciones
+      Regla.expresion.map((expr) => expr.accept(this)).join('\n');
+      return`
       
       `
-
-      Regla.expresion.map((expr) => expr.accept(this)).join('\n');
-
-      return or
     }
 
-    VisitarUnion(Regla){
-      return Regla.expresion.map((expr) => expr.accept(this)).join('\n');
-    }
-
+    // Prefijos
     VisitarVarios(Regla){
       return Regla
     }
@@ -54,6 +58,7 @@ class TokenizadorVisitante extends Visitor {
       return Regla
     }
 
+    
     VisitarExpresiones(Regla){
       return Regla.expresion.accept(this);
     }
@@ -61,12 +66,20 @@ class TokenizadorVisitante extends Visitor {
     VisitarExpresionParseada(Regla){
       return Regla.expresion.accept(this);
     }
+    
+    // Expresiones
+    VisitarLiterales(Regla){
+      
+      return `
+      if ("${node.val}" == input(cursor:cursor + ${node.val.length - 1})) then
+          allocate( character(len=${node.val.length}) :: lexeme)
+          lexeme = input(cursor:cursor + ${node.val.length - 1})
+          cursor = cursor + ${node.val.length}
+          return
+      end if
+      `;
 
-    VisitarRango(Regla){
-      return ;
     }
-
-
 
 }
 
