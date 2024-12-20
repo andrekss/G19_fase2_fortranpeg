@@ -38,19 +38,8 @@ class Union extends Regla {
 }
 
 
-class Expresion extends Regla {
-    constructor(prefijo, expresiones, conteo){
-        super();
-        this.prefijo = prefijo;
-        this.expresiones = expresiones
-        this.conteo = conteo
-    }
 
-    accept(visitor){
-        return visitor.VisitarExpresiones(this);
-    }
-}
-
+// Prefijos
 class Varios extends Regla {
     constructor(prefijo) {
         super();
@@ -72,6 +61,21 @@ class Etiqueta extends Regla {
 
     accept(visitor) {
         return visitor.VisitarUnion(this);
+    }
+}
+
+// Expresiones
+
+class Expresion extends Regla {
+    constructor(prefijo, expresion, conteo){
+        super();
+        this.prefijo = prefijo;
+        this.expresion = expresion
+        this.conteo = conteo
+    }
+
+    accept(visitor){
+        return visitor.VisitarExpresiones(this);
     }
 }
 
@@ -107,7 +111,7 @@ class Literales extends Regla {
     }
 
     accept(visitor){
-        return visitor.VisitarRango(this);
+        return visitor.VisitarLiterales(this);
     }
 }
 

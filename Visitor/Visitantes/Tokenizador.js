@@ -5,8 +5,7 @@ class TokenizadorVisitante extends Visitor {
   constructor(){
     super();
   }
-  Generador_Tokens(gramáticas){
-
+  Generador_Tokens(gramaticas){
 
     return `
       module Main
@@ -18,7 +17,7 @@ class TokenizadorVisitante extends Visitor {
           character(len=:), allocatable :: lexema
 
           INTEGER :: opcion = 1 ! Iniciamos con la primer instruccion del or
-        ${gramáticas.map((produccion) => produccion.accept(this)).join('\n')}
+        ${gramaticas.map((produccion) => produccion.accept(this)).join('\n')}
         END function Nextsym
 
       END module Main
@@ -32,6 +31,8 @@ class TokenizadorVisitante extends Visitor {
 
 
     VisitarOr(Regla) {
+
+      console.log(Regla.expresion)
       return `
         DO WHILE (.true.)
           SELECT CASE(opcion)
@@ -43,10 +44,8 @@ class TokenizadorVisitante extends Visitor {
     }    
 
     VisitarUnion(Regla){ // Concatenaciones
-      Regla.expresion.map((expr) => expr.accept(this)).join('\n');
-      return`
-      
-      `
+      return Regla.expresion.map((expr) => expr.accept(this)).join('\n');
+
     }
 
     // Prefijos
@@ -58,64 +57,64 @@ class TokenizadorVisitante extends Visitor {
       return Regla
     }
 
-    
+    // Busqueda
     VisitarExpresiones(Regla){
+      //console.log(Regla.expresion.accept(this))
       return Regla.expresion.accept(this);
     }
 
     VisitarExpresionParseada(Regla){
+      
       return Regla.expresion.accept(this);
     }
     
     // Expresiones
     VisitarLiterales(Regla){
-      
       return `
-      if ("${node.val}" == input(cursor:cursor + ${node.val.length - 1})) then
-          allocate( character(len=${node.val.length}) :: lexeme)
-          lexeme = input(cursor:cursor + ${node.val.length - 1})
-          cursor = cursor + ${node.val.length}
+      if ("${Regla.Literal}" == input(indice:indice + ${Regla.Literal.length - 1})) then
+          allocate( character(len=${Regla.Literal.length}) :: lexeme)
+          lexeme = input(indice:indice + ${Regla.Literal.length - 1})
+          indice = indice + ${Regla.Literal.length}
           return
       end if
       `;
 
     }
 
-
-      generadorCaracteres(caracteres) {
+    generadorCaracteres(caracteres) {
         if (caracteres.length === 0) return '';
         return `
-    if (findloc([${caracteres
+      if (findloc([${caracteres
         .map((char) => `"${char}"`)
         .join(', ')}], input(i:i), 1) > 0) then
-        lexeme = input(cursor:i)
-        cursor = i + 1
+        lexeme = input(indice:i)
+        indice = i + 1
         return
-    end if
+      end if
         `;
     }
 
 
-      VisitarClase(node) {
+    VisitarClase(Regla) {
         return `
-    i = cursor
-    ${this.generadorCaracteres(
-        node.chars.filter((node) => typeof node === 'string')
-    )}
-    ${node.chars
-        .filter((node) => node instanceof Rango)
+      i = indice
+      ${this.generadorCaracteres(
+        Regla.chars.filter((Regla) => typeof Regla === 'string')
+      )}
+      ${Regla.chars
+        .filter((Regla) => Regla instanceof Rango)
         .map((range) => range.accept(this))
         .join('\n')}
         `;
     }
 
-    VisitarRango(node) {
+    VisitarRango(Regla) {
         return `
-    if (input(i:i) >= "${node.bottom}" .and. input(i:i) <= "${node.top}") then
-        lexeme = input(cursor:i)
-        cursor = i + 1
+      if (input(i:i) >= "${Regla.bottom}" .and. input(i:i) <= "${Regla.top}") then
+        lexeme = input(indice:i)
+        indice = i + 1
         return
-    end if
+      end if
         `;
     }
 

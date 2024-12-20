@@ -36,11 +36,9 @@ document.addEventListener("DOMContentLoaded", function () {
     const boton = document.getElementById("boton_1");
     boton.addEventListener("click", function () {
     
-        const tokenizador = new TokenizadorVisitante(cst);
-        const cadena = tokenizador.Generador_Tokens()
-        const contenido = "te amo"
-
-
+        const tokenizador = new TokenizadorVisitante();
+        const cadena = tokenizador.Generador_Tokens(cst)
+    
    
         generarArchivo('gramatica.f90', cadena);
     });

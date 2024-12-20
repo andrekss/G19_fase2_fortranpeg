@@ -1,42 +1,37 @@
-PROGRAM Main
-  IMPLICIT NONE ! Desactiva la asignación implicita de las variables
 
-  CHARACTER(LEN=50) :: CadenaE ! Variable tipo caracter del mensaje
+      module Main
+        IMPLICIT NONE ! Desactiva la asignación implicita de las variables
+        contains
+        function Nextsym(Cadena, indice)
+          character(len=*), intent(in) :: Cadena
+          integer, intent(inout) :: indice
+          character(len=:), allocatable :: lexema
 
-  ! Solicitar un mensaje al usuario
-  PRINT *, "Introduce una cadena:"
-  READ *, CadenaE
+          INTEGER :: opcion = 1 ! Iniciamos con la primer instruccion del or
+        
+        DO WHILE (.true.)
+          SELECT CASE(opcion)
+            CASE 1: 
+            if (",s" == input(indice:indice + 0)) then
+              allocate( character(len=1) :: lexeme)
+              lexeme = input(indice:indice + 0)
+              indice = indice + 1
+              return
+            end if
+      
+      CASE 2: 
+      if (",s" == input(indice:indice + 0)) then
+          allocate( character(len=1) :: lexeme)
+          lexeme = input(indice:indice + 0)
+          indice = indice + 1
+          return
+      end if
+      
+          END SELECT
+          opcion = opcion+1
+        END DO  
+      
+        END function Nextsym
 
-  CALL Nextsym(CadenaE) ! Llamada
-
-  CONTAINS ! Permite declarar y definir funciones o subrutinas que estarán disponibles solo dentro del programa o módulo en el que están definidas.
-
-  ! Definición de la subrutina
-  SUBROUTINE Nextsym(Cadena)
-    IMPLICIT NONE
-    CHARACTER(LEN=50), INTENT(IN) :: Cadena ! Declarar Cadena como entrada (solo lectura)
-    INTEGER :: opcion = 1
-
-    PRINT *, "Cadena: ", TRIM(Cadena)
-    PRINT *, "Ingrese un número (0 para salir):"
-
-    ! Bucle tipo while
-    DO WHILE (.true.)
-        SELECT CASE(opcion)
-            CASE(1)
-                PRINT *, "La opción es 1"
-            CASE(2)
-                PRINT *, "La opción es 2"
-            CASE(3)
-                PRINT *, "La opción es 3"
-                exit
-            CASE DEFAULT
-                PRINT *, "Opción no reconocida"
-                exit
-        END SELECT
-        opcion = opcion+1
-    END DO
-
-  END SUBROUTINE Nextsym
-
-END PROGRAM Main
+      END module Main
+            

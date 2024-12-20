@@ -9,7 +9,7 @@
     import { ErrorReglas } from './error.js';
     import { errores } from '../index.js'
     
-    // Importaciones Visitor
+    // Importaciones Visitor hijos de regla
     import { Produccion, Or, Union, Varios, Etiqueta, Expresion, ExpresionParseada, Literales } from "../Visitor/Elementos/Reglas.js";
 }}
 
@@ -31,9 +31,9 @@ gramatica = _ prods:producciones+ _ {
 
 producciones = _ id:identificador _ a:(literales)? _ "=" _ o:opciones (_";")? {  ids.push(id);  return new Produccion(id,a,o); } // instruccion
 
-opciones = inicio:union final:(_ "/" _ union)* { return new Or([inicio, ...final]); }
+opciones = inicio:union final:(_ "/" _ @union)* { return new Or([inicio, ...final]); }
 
-union = inicio:expresion final:(_ expresion !(_ literales? _ "=") )* { return new Union([inicio, ...final]); }
+union = inicio:expresion final:(_ @expresion !(_ literales? _ "=") )* { return new Union([inicio, ...final]); }
 
 expresion  = a:(etiqueta/varios)? _ exp:expresiones _ cont:([?+*]/conteo)?  { return new Expresion(a, exp, cont)}
 
@@ -92,8 +92,8 @@ corchete
 texto
     = [^\[\]]+
 
-literales = '"' cadena:stringDobleComilla* '"'     { return new Literales(cadena); }
-            / "'" cadena:stringSimpleComilla* "'"  { return new Literales(cadena); }
+literales = '"' cadena:(@stringDobleComilla)* '"'     { return new Literales(cadena); }
+            / "'" cadena:(@stringSimpleComilla)* "'"  { return new Literales(cadena); }
 
 stringDobleComilla = !('"' / "\\" / finLinea) .
                     / "\\" escape

@@ -14,7 +14,7 @@
     import { ErrorReglas } from './error.js';
     import { errores } from '../index.js'
     
-    // Importaciones Visitor
+    // Importaciones Visitor hijos de regla
     import { Produccion, Or, Union, Varios, Etiqueta, Expresion, ExpresionParseada, Literales } from "../Visitor/Elementos/Reglas.js";
 
 function peg$subclass(child, parent) {
@@ -288,12 +288,12 @@ function peg$parse(input, options) {
   var peg$f4 = function(a, exp, cont) { return new Expresion(a, exp, cont)};
   var peg$f5 = function(pluck, id, varios) { return new Etiqueta(pluck, id, varios) };
   var peg$f6 = function(pre) { return new Varios(pre) };
-  var peg$f7 = function(exp) { usos.push(id); return new ExpresionParseada(exp)};
+  var peg$f7 = function(exp) { usos.push(id); return new ExpresionParseada(exp); };
   var peg$f8 = function(exp) { return new ExpresionParseada(exp);};
   var peg$f9 = function(exp) { return new ExpresionParseada(exp); };
   var peg$f10 = function(exp) { return new ExpresionParseada(exp); };
-  var peg$f11 = function(exp) { return new ExpresionParseada(exp)};
-  var peg$f12 = function(exp) { return new ExpresionParseada(exp)};
+  var peg$f11 = function(exp) { return new ExpresionParseada(exp); };
+  var peg$f12 = function(exp) { return new ExpresionParseada(exp); };
   var peg$f13 = function(contenido) {
         return `Entrada válida: [${input}]`;
     };
@@ -578,8 +578,7 @@ function peg$parse(input, options) {
         s6 = peg$parse_();
         s7 = peg$parseunion();
         if (s7 !== peg$FAILED) {
-          s4 = [s4, s5, s6, s7];
-          s3 = s4;
+          s3 = s7;
         } else {
           peg$currPos = s3;
           s3 = peg$FAILED;
@@ -603,8 +602,7 @@ function peg$parse(input, options) {
           s6 = peg$parse_();
           s7 = peg$parseunion();
           if (s7 !== peg$FAILED) {
-            s4 = [s4, s5, s6, s7];
-            s3 = s4;
+            s3 = s7;
           } else {
             peg$currPos = s3;
             s3 = peg$FAILED;
@@ -666,8 +664,7 @@ function peg$parse(input, options) {
           s6 = peg$FAILED;
         }
         if (s6 !== peg$FAILED) {
-          s4 = [s4, s5, s6];
-          s3 = s4;
+          s3 = s5;
         } else {
           peg$currPos = s3;
           s3 = peg$FAILED;
@@ -713,8 +710,7 @@ function peg$parse(input, options) {
             s6 = peg$FAILED;
           }
           if (s6 !== peg$FAILED) {
-            s4 = [s4, s5, s6];
-            s3 = s4;
+            s3 = s5;
           } else {
             peg$currPos = s3;
             s3 = peg$FAILED;
@@ -1402,7 +1398,7 @@ function peg$parse(input, options) {
   }
 
   function peg$parseliterales() {
-    var s0, s1, s2, s3;
+    var s0, s1, s2, s3, s4;
 
     s0 = peg$currPos;
     if (input.charCodeAt(peg$currPos) === 34) {
@@ -1414,10 +1410,24 @@ function peg$parse(input, options) {
     }
     if (s1 !== peg$FAILED) {
       s2 = [];
-      s3 = peg$parsestringDobleComilla();
+      s3 = peg$currPos;
+      s4 = peg$parsestringDobleComilla();
+      if (s4 !== peg$FAILED) {
+        s3 = s4;
+      } else {
+        peg$currPos = s3;
+        s3 = peg$FAILED;
+      }
       while (s3 !== peg$FAILED) {
         s2.push(s3);
-        s3 = peg$parsestringDobleComilla();
+        s3 = peg$currPos;
+        s4 = peg$parsestringDobleComilla();
+        if (s4 !== peg$FAILED) {
+          s3 = s4;
+        } else {
+          peg$currPos = s3;
+          s3 = peg$FAILED;
+        }
       }
       if (input.charCodeAt(peg$currPos) === 34) {
         s3 = peg$c16;
@@ -1448,10 +1458,24 @@ function peg$parse(input, options) {
       }
       if (s1 !== peg$FAILED) {
         s2 = [];
-        s3 = peg$parsestringSimpleComilla();
+        s3 = peg$currPos;
+        s4 = peg$parsestringSimpleComilla();
+        if (s4 !== peg$FAILED) {
+          s3 = s4;
+        } else {
+          peg$currPos = s3;
+          s3 = peg$FAILED;
+        }
         while (s3 !== peg$FAILED) {
           s2.push(s3);
-          s3 = peg$parsestringSimpleComilla();
+          s3 = peg$currPos;
+          s4 = peg$parsestringSimpleComilla();
+          if (s4 !== peg$FAILED) {
+            s3 = s4;
+          } else {
+            peg$currPos = s3;
+            s3 = peg$FAILED;
+          }
         }
         if (input.charCodeAt(peg$currPos) === 39) {
           s3 = peg$c17;
