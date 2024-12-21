@@ -11,7 +11,7 @@ class TokenizadorVisitante extends Visitor {
       module Main
         IMPLICIT NONE ! Desactiva la asignación implicita de las variables
         contains
-        function Nextsym(Cadena, indice)
+        function Nextsym(Cadena, indice) result(lexema)
           character(len=*), intent(in) :: Cadena
           integer, intent(inout) :: indice
           character(len=:), allocatable :: lexema
@@ -36,7 +36,7 @@ class TokenizadorVisitante extends Visitor {
       return `
         DO WHILE (.true.)
           SELECT CASE(opcion)
-            ${Regla.expresion.map((expr, caso) => `CASE ${caso + 1}: ${expr.accept(this)}`).join('\n')}
+            ${Regla.expresion.map((expr, caso) => `CASE (${caso + 1}) ${expr.accept(this)}`).join('\n')}
           END SELECT
           opcion = opcion+1
         END DO  
@@ -59,21 +59,16 @@ class TokenizadorVisitante extends Visitor {
 
     // Busqueda
     VisitarExpresiones(Regla){
-      //console.log(Regla.expresion.accept(this))
-      return Regla.expresion.accept(this);
-    }
 
-    VisitarExpresionParseada(Regla){
-      
       return Regla.expresion.accept(this);
     }
     
     // Expresiones
     VisitarLiterales(Regla){
       return `
-      if ("${Regla.Literal}" == input(indice:indice + ${Regla.Literal.length - 1})) then
-          allocate( character(len=${Regla.Literal.length}) :: lexeme)
-          lexeme = input(indice:indice + ${Regla.Literal.length - 1})
+      if ("${Regla.Literal}" == Cadena(indice:indice + ${Regla.Literal.length - 1})) then
+          allocate( character(len=${Regla.Literal.length}) :: lexema)
+          lexema = Cadena(indice:indice + ${Regla.Literal.length - 1})
           indice = indice + ${Regla.Literal.length}
           return
       end if
@@ -86,8 +81,8 @@ class TokenizadorVisitante extends Visitor {
         return `
       if (findloc([${caracteres
         .map((char) => `"${char}"`)
-        .join(', ')}], input(i:i), 1) > 0) then
-        lexeme = input(indice:i)
+        .join(', ')}], Cadena(i:i), 1) > 0) then
+        lexema = Cadena(indice:i)
         indice = i + 1
         return
       end if
@@ -110,8 +105,8 @@ class TokenizadorVisitante extends Visitor {
 
     VisitarRango(Regla) {
         return `
-      if (input(i:i) >= "${Regla.bottom}" .and. input(i:i) <= "${Regla.top}") then
-        lexeme = input(indice:i)
+      if (Cadena(i:i) >= "${Regla.bottom}" .and. Cadena(i:i) <= "${Regla.top}") then
+        lexema = Cadena(indice:i)
         indice = i + 1
         return
       end if

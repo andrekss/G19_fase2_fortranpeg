@@ -15,7 +15,7 @@
     import { errores } from '../index.js'
     
     // Importaciones Visitor hijos de regla
-    import { Produccion, Or, Union, Varios, Etiqueta, Expresion, ExpresionParseada, Literales } from "../Visitor/Elementos/Reglas.js";
+    import { Produccion, Or, Union, Varios, Etiqueta, Expresion, Literales } from "../Visitor/Elementos/Reglas.js";
 
 function peg$subclass(child, parent) {
   function C() { this.constructor = child; }
@@ -288,12 +288,12 @@ function peg$parse(input, options) {
   var peg$f4 = function(a, exp, cont) { return new Expresion(a, exp, cont)};
   var peg$f5 = function(pluck, id, varios) { return new Etiqueta(pluck, id, varios) };
   var peg$f6 = function(pre) { return new Varios(pre) };
-  var peg$f7 = function(exp) { usos.push(id); return new ExpresionParseada(exp); };
-  var peg$f8 = function(exp) { return new ExpresionParseada(exp);};
-  var peg$f9 = function(exp) { return new ExpresionParseada(exp); };
-  var peg$f10 = function(exp) { return new ExpresionParseada(exp); };
-  var peg$f11 = function(exp) { return new ExpresionParseada(exp); };
-  var peg$f12 = function(exp) { return new ExpresionParseada(exp); };
+  var peg$f7 = function(exp) { usos.push(id); return exp; };
+  var peg$f8 = function(exp, caso) { return new Literales(exp.replace(/['"]/g, ''),caso);};
+  var peg$f9 = function(exp) { return exp; };
+  var peg$f10 = function(exp) { };
+  var peg$f11 = function(exp) { };
+  var peg$f12 = function(exp) {  };
   var peg$f13 = function(contenido) {
         return `Entrada válida: [${input}]`;
     };
@@ -305,8 +305,8 @@ function peg$parse(input, options) {
         return `${inicio}-${fin}`;
     };
   var peg$f15 = function() { return text()};
-  var peg$f16 = function(cadena) { return new Literales(cadena); };
-  var peg$f17 = function(cadena) { return new Literales(cadena); };
+  var peg$f16 = function(cadena) { return cadena };
+  var peg$f17 = function(cadena) { return cadena };
   var peg$f18 = function() { return text() };
   var peg$currPos = options.peg$currPos | 0;
   var peg$savedPos = peg$currPos;
@@ -844,7 +844,13 @@ function peg$parse(input, options) {
     s0 = s1;
     if (s0 === peg$FAILED) {
       s0 = peg$currPos;
-      s1 = peg$parseliterales();
+      s1 = peg$currPos;
+      s2 = peg$parseliterales();
+      if (s2 !== peg$FAILED) {
+        s1 = input.substring(s1, peg$currPos);
+      } else {
+        s1 = s2;
+      }
       if (s1 !== peg$FAILED) {
         if (input.charCodeAt(peg$currPos) === 105) {
           s2 = peg$c5;
@@ -857,7 +863,7 @@ function peg$parse(input, options) {
           s2 = null;
         }
         peg$savedPos = s0;
-        s0 = peg$f8(s1);
+        s0 = peg$f8(s1, s2);
       } else {
         peg$currPos = s0;
         s0 = peg$FAILED;

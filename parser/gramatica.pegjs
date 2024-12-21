@@ -10,7 +10,7 @@
     import { errores } from '../index.js'
     
     // Importaciones Visitor hijos de regla
-    import { Produccion, Or, Union, Varios, Etiqueta, Expresion, ExpresionParseada, Literales } from "../Visitor/Elementos/Reglas.js";
+    import { Produccion, Or, Union, Varios, Etiqueta, Expresion, Literales } from "../Visitor/Elementos/Reglas.js";
 }}
 
 gramatica = _ prods:producciones+ _ {   
@@ -40,13 +40,13 @@ expresion  = a:(etiqueta/varios)? _ exp:expresiones _ cont:([?+*]/conteo)?  { re
 etiqueta = pluck:("@")? _ id:identificador _ ":" varios:(varios)? { return new Etiqueta(pluck, id, varios) }
 
 varios = pre:("!"/"$"/"@"/"&") { return new Varios(pre) }
-// queso
-expresiones  =  exp:identificador          { usos.push(id); return new ExpresionParseada(exp); }
-                / exp:literales "i"?       { return new ExpresionParseada(exp);}
-                / "(" _ exp:opciones _ ")" { return new ExpresionParseada(exp); }
-                / exp:corchetes "i"?       { return new ExpresionParseada(exp); }
-                / exp:"."                  { return new ExpresionParseada(exp); }
-                / exp:"!."                 { return new ExpresionParseada(exp); }
+
+expresiones  =  exp:identificador          { usos.push(id); return exp; }
+                / exp:$literales caso:"i"?  { return new Literales(exp.replace(/['"]/g, ''),caso);}
+                / "(" _ exp:opciones _ ")" { return exp; }
+                / exp:corchetes "i"?       { }
+                / exp:"."                  { }
+                / exp:"!."                 {  }
 
 // conteo = "|" parteconteo _ (_ delimitador )? _ "|"
 
@@ -92,8 +92,8 @@ corchete
 texto
     = [^\[\]]+
 
-literales = '"' cadena:(@stringDobleComilla)* '"'     { return new Literales(cadena); }
-            / "'" cadena:(@stringSimpleComilla)* "'"  { return new Literales(cadena); }
+literales = '"' cadena:(@stringDobleComilla)* '"'     { return cadena }
+            / "'" cadena:(@stringSimpleComilla)* "'"  { return cadena }
 
 stringDobleComilla = !('"' / "\\" / finLinea) .
                     / "\\" escape

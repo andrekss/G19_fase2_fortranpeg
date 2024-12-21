@@ -105,9 +105,10 @@ class Rango extends Regla {
 
 
 class Literales extends Regla {
-    constructor(Literal){
+    constructor(Literal, case_Letra){
         super();
         this.Literal = Literal;
+        this.case_Letra = case_Letra;
     }
 
     accept(visitor){
