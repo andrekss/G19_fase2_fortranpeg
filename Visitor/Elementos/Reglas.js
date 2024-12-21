@@ -79,18 +79,6 @@ class Expresion extends Regla {
     }
 }
 
-class ExpresionParseada extends Regla {
-    constructor(expresion){
-        super();
-        this.expresion = expresion;
-    }
-
-    accept(visitor){
-        return visitor.VisitarExpresionParseada(this);
-    }
-}
-
-
 class Rango extends Regla {
     constructor(inicio, fin){
         super();
@@ -101,6 +89,19 @@ class Rango extends Regla {
     accept(visitor){
         return visitor.VisitarRango(this);
     }
+}
+
+class Corchete extends Regla{
+    constructor(Rango, caso){
+        super()
+        this.Rango = Rango;
+        this.caso = caso;
+    }
+
+    accept(visitor){
+        return visitor.VisitarCorchete(this);
+    }
+
 }
 
 
@@ -117,6 +118,6 @@ class Literales extends Regla {
 }
 
 
-export {Produccion, Or, Union, Varios, Etiqueta, Expresion, ExpresionParseada, Rango, Literales};
+export {Produccion, Or, Union, Varios, Etiqueta, Expresion, Rango, Literales, Corchete};
 
 // Seguir escribiendo clases ...

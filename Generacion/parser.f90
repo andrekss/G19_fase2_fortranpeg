@@ -2,7 +2,7 @@ program parser
     use Main
     implicit none
 
-    character(len=*), parameter :: Cadena = "hoa"
+    character(len=*), parameter :: Cadena = "7"
     character(len=:), allocatable :: lexema
     integer :: indice
 

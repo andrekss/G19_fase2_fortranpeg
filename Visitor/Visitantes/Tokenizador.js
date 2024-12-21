@@ -1,4 +1,5 @@
 import { Visitor } from "../Visitante.js";
+import { Rango } from "../Elementos/Reglas.js";
 
 class TokenizadorVisitante extends Visitor {
 
@@ -15,9 +16,17 @@ class TokenizadorVisitante extends Visitor {
           character(len=*), intent(in) :: Cadena
           integer, intent(inout) :: indice
           character(len=:), allocatable :: lexema
+          integer :: in
 
-          INTEGER :: opcion = 1 ! Iniciamos con la primer instruccion del or
+          if (indice > len(Cadena)) then
+            allocate( character(len=3) :: lexema )
+            lexema = "EOF"
+            return
+          end if
+          
         ${gramaticas.map((produccion) => produccion.accept(this)).join('\n')}
+
+        lexema = "ERROR"
         END function Nextsym
 
       END module Main
@@ -31,21 +40,11 @@ class TokenizadorVisitante extends Visitor {
 
 
     VisitarOr(Regla) {
-
-      console.log(Regla.expresion)
-      return `
-        DO WHILE (.true.)
-          SELECT CASE(opcion)
-            ${Regla.expresion.map((expr, caso) => `CASE (${caso + 1}) ${expr.accept(this)}`).join('\n')}
-          END SELECT
-          opcion = opcion+1
-        END DO  
-      `;
+      return Regla.expresion.map((expr) => expr.accept(this)).join('\n');
     }    
 
     VisitarUnion(Regla){ // Concatenaciones
       return Regla.expresion.map((expr) => expr.accept(this)).join('\n');
-
     }
 
     // Prefijos
@@ -76,41 +75,49 @@ class TokenizadorVisitante extends Visitor {
 
     }
 
-    generadorCaracteres(caracteres) {
-        if (caracteres.length === 0) return '';
-        return `
-      if (findloc([${caracteres
-        .map((char) => `"${char}"`)
-        .join(', ')}], Cadena(i:i), 1) > 0) then
-        lexema = Cadena(indice:i)
-        indice = i + 1
-        return
-      end if
-        `;
-    }
 
+    generateCaracteres(chars) {
+      if (chars.length === 0) return '';
+      return `
+  if (findloc([${chars
+      .map((char) => `"${char}"`)
+      .join(', ')}], Cadena(in:in), 1) > 0) then
+      lexema = Cadena(indice:in)
+      indice = in + 1
+      return
+  end if
+      `;
+  }
 
-    VisitarClase(Regla) {
-        return `
-      i = indice
-      ${this.generadorCaracteres(
-        Regla.chars.filter((Regla) => typeof Regla === 'string')
+    VisitarCorchete(Regla) {
+      
+      //return Regla.Rango.accept(this);
+      return `
+      in = indice
+      ${this.generateCaracteres(
+        Regla.Rango.filter((Regla) => typeof Regla === 'string')
       )}
-      ${Regla.chars
-        .filter((Regla) => Regla instanceof Rango)
-        .map((range) => range.accept(this))
-        .join('\n')}
-        `;
+      ${Regla.Rango
+          .filter((Regla) => Regla instanceof Rango)
+          .map((range) => range.accept(this))
+          .join('\n')}
+          `;
     }
 
     VisitarRango(Regla) {
+        /*return `
+          if ( IACHAR(Cadena) >= IACHAR(${Regla.inicio}) .and. IACHAR(c) <= IACHAR(${Regla.fin}) ) then
+            print *, "Es un dígito (opción B)."
+          end if         
+        `;*/
+
         return `
-      if (Cadena(i:i) >= "${Regla.bottom}" .and. Cadena(i:i) <= "${Regla.top}") then
-        lexema = Cadena(indice:i)
-        indice = i + 1
-        return
-      end if
-        `;
+        if (Cadena(in:in) >= "${Regla.inicio}" .and. Cadena(in:in) <= "${Regla.fin}") then
+            lexema = Cadena(indice:in)
+            indice = in + 1
+            return
+        end if
+            `;
     }
 
 }

@@ -10,7 +10,7 @@ class Visitor {
 	VisitarRango(Regla){} // 7
 	VisitarIdentificador(Regla){} // 9
 	VisitarNumber(Regla){}
-	generadorCaracteres(Regla){}
+	VisitarCorchete(Regla){}
 	
 }
 

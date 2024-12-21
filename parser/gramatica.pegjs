@@ -10,7 +10,7 @@
     import { errores } from '../index.js'
     
     // Importaciones Visitor hijos de regla
-    import { Produccion, Or, Union, Varios, Etiqueta, Expresion, Literales } from "../Visitor/Elementos/Reglas.js";
+    import { Produccion, Or, Union, Varios, Etiqueta, Expresion, Literales, Rango, Corchete } from "../Visitor/Elementos/Reglas.js";
 }}
 
 gramatica = _ prods:producciones+ _ {   
@@ -44,7 +44,7 @@ varios = pre:("!"/"$"/"@"/"&") { return new Varios(pre) }
 expresiones  =  exp:identificador          { usos.push(id); return exp; }
                 / exp:$literales caso:"i"?  { return new Literales(exp.replace(/['"]/g, ''),caso);}
                 / "(" _ exp:opciones _ ")" { return exp; }
-                / exp:corchetes "i"?       { }
+                / exp:corchetes caso:"i"?  { return new Corchete(exp, caso); }
                 / exp:"."                  { }
                 / exp:"!."                 {  }
 
@@ -64,18 +64,20 @@ conteo = "|" _ (numero / id:identificador) _ "|"
 
 // Regla principal que analiza corchetes con contenido
 corchetes
-    = "[" contenido:(rango / contenido)+ "]" {
-        return `Entrada válida: [${input}]`;
+    = "[" contenido:(@rango / contenido)+ "]" {
+        return contenido;
     }
 
 // Regla para validar un rango como [A-Z]
 rango
-    = inicio:caracter "-" fin:caracter {
+    = inicio:$caracter "-" fin:$caracter {
         if (inicio.charCodeAt(0) > fin.charCodeAt(0)) {
             throw new Error(`Rango inválido: [${inicio}-${fin}]`);
 
         }
-        return `${inicio}-${fin}`;
+        return new Rango(inicio, fin);
+
+        
     }
 
 // Regla para caracteres individuales
