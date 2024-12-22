@@ -79,18 +79,6 @@ class Expresion extends Regla {
     }
 }
 
-class ExpresionParseada extends Regla {
-    constructor(expresion){
-        super();
-        this.expresion = expresion;
-    }
-
-    accept(visitor){
-        return visitor.VisitarExpresionParseada(this);
-    }
-}
-
-
 class Rango extends Regla {
     constructor(inicio, fin){
         super();
@@ -103,11 +91,25 @@ class Rango extends Regla {
     }
 }
 
+class Corchete extends Regla{
+    constructor(Rango, caso){
+        super()
+        this.Rango = Rango;
+        this.caso = caso;
+    }
+
+    accept(visitor){
+        return visitor.VisitarCorchete(this);
+    }
+
+}
+
 
 class Literales extends Regla {
-    constructor(Literal){
+    constructor(Literal, case_Letra){
         super();
         this.Literal = Literal;
+        this.case_Letra = case_Letra;
     }
 
     accept(visitor){
@@ -115,7 +117,25 @@ class Literales extends Regla {
     }
 }
 
+class Punto extends Regla {
+    constructor(){
+        super();
+    }
 
-export {Produccion, Or, Union, Varios, Etiqueta, Expresion, ExpresionParseada, Rango, Literales};
+    accept(visitor){
+        return visitor.VisitarPunto(this);
+    }
+}
 
-// Seguir escribiendo clases ...
+class Eof extends Regla {
+    constructor(){
+        super();
+    }
+
+    accept(visitor){
+        return visitor.VisitarEof(this);
+    }
+}
+
+
+export {Produccion, Or, Union, Varios, Etiqueta, Expresion, Rango, Literales, Corchete};
