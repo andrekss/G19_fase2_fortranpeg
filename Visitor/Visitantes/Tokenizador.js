@@ -148,7 +148,7 @@ class TokenizadorVisitante extends Visitor {
       `
     }
 
-    VisotarEof(Regla){
+    VisitarEof(Regla){
       return `
         if (Cadena(in:in) >= "0" .and. Cadena(in:in) <= "9") then
           ! Capture the token and advance the index
