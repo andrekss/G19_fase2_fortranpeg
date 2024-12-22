@@ -10,7 +10,7 @@
     import { errores } from '../index.js'
     
     // Importaciones Visitor hijos de regla
-    import { Produccion, Or, Union, Varios, Etiqueta, Expresion, Literales, Rango, Corchete } from "../Visitor/Elementos/Reglas.js";
+    import { Produccion, Or, Union, Varios, Etiqueta, Expresion, Literales, Rango, Corchete, Punto, Eof } from "../Visitor/Elementos/Reglas.js";
 }}
 
 gramatica = _ prods:producciones+ _ {   
@@ -45,8 +45,8 @@ expresiones  =  exp:identificador          { usos.push(exp); return exp; }
                 / exp:$literales caso:"i"?  { return new Literales(exp.replace(/['"]/g, ''),caso);}
                 / "(" _ exp:opciones _ ")" { return exp; }
                 / exp:corchetes caso:"i"?  { return new Corchete(exp, caso); }
-                / exp:"."                  { }
-                / exp:"!."                 {  }
+                / exp:"."                  { return new Punto(); }
+                / exp:"!."                 { return new Eof(); }
 
 // conteo = "|" parteconteo _ (_ delimitador )? _ "|"
 
