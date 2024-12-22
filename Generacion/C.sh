@@ -14,7 +14,6 @@ if [ $? -ne 0 ]; then
     exit 1
 fi
 
-gfortran parser.f90 -o parser
 # Ejecutar el ejecutable generado
 echo "Ejecutando el programa..."
 ./parser

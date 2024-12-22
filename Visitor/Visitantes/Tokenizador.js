@@ -12,22 +12,42 @@ class TokenizadorVisitante extends Visitor {
       module Main
         IMPLICIT NONE ! Desactiva la asignación implicita de las variables
         contains
+
+
         function Nextsym(Cadena, indice) result(lexema)
           character(len=*), intent(in) :: Cadena
           integer, intent(inout) :: indice
           character(len=:), allocatable :: lexema
           integer :: in
+          INTEGER :: opcion
+          opcion = 1 ! Iniciamos con la primer instruccion del or
 
           if (indice > len(Cadena)) then
             allocate( character(len=3) :: lexema )
             lexema = "EOF"
             return
           end if
-          
-        ${gramaticas.map((produccion) => produccion.accept(this)).join('\n')}
 
-        lexema = "ERROR"
+          lexema = ${gramaticas[0].id+"(Cadena, indice)"}  ! produccion inicial
+          return
         END function Nextsym
+     
+          ${gramaticas.map((produccion) => produccion.accept(this)).join('\n')}        
+
+            ! Función para convertir una cadena de texto a mayúsculas
+    function ToUpperCase(Cadena) result(UpperCaseCadena)
+        character(len=*), intent(in) :: Cadena
+        character(len=len(Cadena)) :: UpperCaseCadena
+        integer :: i, charCode
+
+        UpperCaseCadena = Cadena
+        do i = 1, len(Cadena)
+            charCode = iachar(Cadena(i:i))
+            if (charCode >= iachar('a') .and. charCode <= iachar('z')) then
+                UpperCaseCadena(i:i) = achar(charCode - 32)
+            end if
+        end do
+    end function ToUpperCase
 
       END module Main
             `;
@@ -35,12 +55,36 @@ class TokenizadorVisitante extends Visitor {
     // Reglas
 
     VisitarProduccion(Regla) {
-      return Regla.expresion.accept(this);  // Ejecutamos la expresión
+      return `
+      function ${Regla.id}(Cadena, indice) result(lexema)
+          character(len=*), intent(in) :: Cadena
+          integer, intent(inout) :: indice
+          character(len=:), allocatable :: lexema
+          integer :: in
+          INTEGER :: opcion
+          opcion = 1 ! Iniciamos con la primer instruccion del or
+
+      ${Regla.expresion.accept(this)}
+
+      lexema = "ERROR"
+      END function ${Regla.id}
+      `
     }
 
 
-    VisitarOr(Regla) {
-      return Regla.expresion.map((expr) => expr.accept(this)).join('\n');
+    VisitarOr(Regla) { // Una produccion
+      return `
+      DO WHILE (.true.)
+        SELECT CASE(opcion)
+          ${Regla.expresion.map((expr, caso) => `CASE (${caso + 1}) ${expr.accept(this)}`).join('\n')} 
+          case default
+            lexema = "ERROR"
+            return
+        END SELECT
+        opcion = opcion+1
+      END DO  
+    `;
+      //return Regla.expresion.map((expr) => expr.accept(this)).join('\n');
     }    
 
     VisitarUnion(Regla){ // Concatenaciones
@@ -69,14 +113,16 @@ class TokenizadorVisitante extends Visitor {
       let funcion;
       let cierre; 
       if (Regla.case_Letra == "i"){  // case insensitive
-        funcion= "tolower("
+        funcion= "ToUpperCase("
         cierre = ")"
       }else if (Regla.case_Letra == null){
         funcion = ""
         cierre = ""
       }
+
+          //if (Cadena(indice:indice + 3) == "hola" .and. len(Cadena) == len("hola")) 
       return `
-      if (${funcion}"${Regla.Literal}"${cierre} == ${funcion}Cadena(indice:indice + ${Regla.Literal.length - 1})${cierre}) then
+      if (${funcion}"${Regla.Literal}"${cierre} == ${funcion}Cadena(indice:indice + ${Regla.Literal.length - 1})${cierre} .and. len(Cadena) == len("${Regla.Literal}")) then
           allocate( character(len=${Regla.Literal.length}) :: lexema)
           lexema = Cadena(indice:indice + ${Regla.Literal.length - 1})
           indice = indice + ${Regla.Literal.length}
@@ -157,8 +203,6 @@ class TokenizadorVisitante extends Visitor {
           indice = in + 1
           return
         end if
-
-
       `;
     }
 
