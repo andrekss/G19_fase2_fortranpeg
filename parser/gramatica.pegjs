@@ -41,7 +41,7 @@ etiqueta = pluck:("@")? _ id:identificador _ ":" varios:(varios)? { return new E
 
 varios = pre:("!"/"$"/"@"/"&") { return new Varios(pre) }
 
-expresiones  =  exp:identificador          { usos.push(id); return exp; }
+expresiones  =  exp:identificador          { usos.push(exp); return exp; }
                 / exp:$literales caso:"i"?  { return new Literales(exp.replace(/['"]/g, ''),caso);}
                 / "(" _ exp:opciones _ ")" { return exp; }
                 / exp:corchetes caso:"i"?  { return new Corchete(exp, caso); }
@@ -75,9 +75,9 @@ rango
             throw new Error(`Rango inválido: [${inicio}-${fin}]`);
 
         }
-        return new Rango(inicio, fin);
+       // return new Rango(inicio, fin);
 
-        
+        return `${inicio}-${fin}`;//se debe crear la lista
     }
 
 // Regla para caracteres individuales

@@ -288,7 +288,7 @@ function peg$parse(input, options) {
   var peg$f4 = function(a, exp, cont) { return new Expresion(a, exp, cont)};
   var peg$f5 = function(pluck, id, varios) { return new Etiqueta(pluck, id, varios) };
   var peg$f6 = function(pre) { return new Varios(pre) };
-  var peg$f7 = function(exp) { usos.push(id); return exp; };
+  var peg$f7 = function(exp) { usos.push(exp); return exp; };
   var peg$f8 = function(exp, caso) { return new Literales(exp.replace(/['"]/g, ''),caso);};
   var peg$f9 = function(exp) { return exp; };
   var peg$f10 = function(exp, caso) { return new Corchete(exp, caso); };
@@ -302,9 +302,9 @@ function peg$parse(input, options) {
             throw new Error(`Rango inválido: [${inicio}-${fin}]`);
 
         }
-        return new Rango(inicio, fin);
+       // return new Rango(inicio, fin);
 
-        
+        return `${inicio}-${fin}`;//se debe crear la lista
     };
   var peg$f15 = function() { return text()};
   var peg$f16 = function(cadena) { return cadena };

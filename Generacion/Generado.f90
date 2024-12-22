@@ -13,21 +13,18 @@
             lexema = "EOF"
             return
           end if
-          
-        
-      in = indice
-      
-      
-        if (Cadena(in:in) >= "0" .and. Cadena(in:in) <= "9") then
-            lexema = Cadena(indice:in)
-            indice = in + 1
-            return
-        end if
-            
-          
 
+      if ("hola" == Cadena(indice:indice + 3)) then
+          allocate( character(len=4) :: lexema)
+          lexema = Cadena(indice:indice + 3)
+          indice = indice + 4
+          return
+      end if
+      
         lexema = "ERROR"
         END function Nextsym
+
+        
 
       END module Main
             

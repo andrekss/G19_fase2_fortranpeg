@@ -58,14 +58,25 @@ class TokenizadorVisitante extends Visitor {
 
     // Busqueda
     VisitarExpresiones(Regla){
-
-      return Regla.expresion.accept(this);
+      return `
+      ${Regla.expresion.accept(this)}
+      `
+      
     }
     
     // Expresiones
     VisitarLiterales(Regla){
+      let funcion;
+      let cierre; 
+      if (Regla.case_Letra == "i"){  // case insensitive
+        funcion= "tolower("
+        cierre = ")"
+      }else if (Regla.case_Letra == null){
+        funcion = ""
+        cierre = ""
+      }
       return `
-      if ("${Regla.Literal}" == Cadena(indice:indice + ${Regla.Literal.length - 1})) then
+      if (${funcion}"${Regla.Literal}"${cierre} == ${funcion}Cadena(indice:indice + ${Regla.Literal.length - 1})${cierre}) then
           allocate( character(len=${Regla.Literal.length}) :: lexema)
           lexema = Cadena(indice:indice + ${Regla.Literal.length - 1})
           indice = indice + ${Regla.Literal.length}
@@ -74,7 +85,6 @@ class TokenizadorVisitante extends Visitor {
       `;
 
     }
-
 
     generateCaracteres(chars) {
       if (chars.length === 0) return '';
