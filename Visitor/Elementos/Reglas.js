@@ -117,7 +117,25 @@ class Literales extends Regla {
     }
 }
 
+class Punto extends Regla {
+    constructor(){
+        super();
+    }
+
+    accept(visitor){
+        return visitor.VisitarPunto(this);
+    }
+}
+
+class Eof extends Regla {
+    constructor(){
+        super();
+    }
+
+    accept(visitor){
+        return visitor.VisitarEof(this);
+    }
+}
+
 
 export {Produccion, Or, Union, Varios, Etiqueta, Expresion, Rango, Literales, Corchete};
-
-// Seguir escribiendo clases ...

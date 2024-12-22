@@ -11,7 +11,8 @@ class Visitor {
 	VisitarIdentificador(Regla){} // 9
 	VisitarNumber(Regla){}
 	VisitarCorchete(Regla){}
-	
+	VisitarPunto(Regla){}
+	VisitarEof(Regla){}
 }
 
 export {Visitor};

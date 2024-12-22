@@ -120,6 +120,38 @@ class TokenizadorVisitante extends Visitor {
             `;
     }
 
+    VisitarPunto(Regla){
+      return `
+        ! Check if the current character is '.'
+        if (Cadena(in:in) == ".") then
+            ! Accept any single character as a wildcard
+            if (indice < len(Cadena)) then
+                allocate(character(len=1) :: lexema)
+                lexema = Cadena(in:in)  ! Return the wildcard character
+                indice = in + 1         ! Advance to the next character
+            else
+                allocate(character(len=3) :: lexema)
+                lexema = "EOF"          ! Handle case where no more characters exist
+            end if
+            return
+        end if
+      `
+    }
+
+    VisotarEof(Regla){
+      return `
+        if (Cadena(in:in) >= "0" .and. Cadena(in:in) <= "9") then
+          ! Capture the token and advance the index
+          allocate(character(len=1) :: lexema)
+          lexema = Cadena(indice:in)
+          indice = in + 1
+          return
+        end if
+
+
+      `;
+    }
+
 }
 
 export{TokenizadorVisitante};
