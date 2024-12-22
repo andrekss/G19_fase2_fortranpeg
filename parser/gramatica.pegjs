@@ -64,7 +64,7 @@ conteo = "|" _ (numero / id:identificador) _ "|"
 
 // Regla principal que analiza corchetes con contenido
 corchetes
-    = "[" contenido:(@rango / contenido)+ "]" {
+    = "[" contenido:(@rango / @contenido)+ "]" {
         return contenido;
     }
 
