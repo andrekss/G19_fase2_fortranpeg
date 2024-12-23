@@ -16,8 +16,6 @@
           lexema = nextsym(input, cursor)
           print *, lexema
         end do
-
-
       end subroutine parse
 
         function nextsym(Cadena, indice) result(lexema)
@@ -79,6 +77,13 @@
       
       lexema = Expresion(Cadena, indice)
       return
+      if ("carmen" == Cadena(indice:indice + 5) .and. caso(2)) then
+          allocate( character(len=6) :: lexema)
+          lexema = Cadena(indice:indice + 5)
+          indice = indice + 6
+          caso(2) = .false.
+          return
+      end if
       
       
       opciones(2) = .false.
