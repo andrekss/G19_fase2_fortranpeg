@@ -2,16 +2,18 @@
       module parser
         IMPLICIT NONE ! Desactiva la asignación implicita de las variables
 
-        ! Declarar el arreglo global y persistente
-        logical, dimension(100) :: opciones = .true.
+        !integer :: tamanho = 100
+        logical, dimension(100) :: opciones = .true. ! control de or
+        logical, dimension(100) :: caso = .true.  ! control concatenacion
         contains
 
       subroutine parse(input)
         integer :: cursor = 1
         character(len=:), intent(inout), allocatable :: input
-        do while (input /= "EOF" .and. input /= "ERROR")
-          input = nextsym(input, cursor)
-          print *, input
+        character(len=:), allocatable :: lexema
+        do while (lexema /= "EOF" .and. lexema /= "ERROR")
+          lexema = nextsym(input, cursor)
+          print *, lexema
         end do
       end subroutine parse
 
@@ -27,54 +29,87 @@
             return
           end if
 
-          lexema = hu(Cadena, indice)  ! produccion inicial
+          lexema = hola(Cadena, indice)  ! produccion inicial
           return
         END function Nextsym
      
           
-      function hu(Cadena, indice) result(lexema)
+      function hola(Cadena, indice) result(lexema)
           character(len=*), intent(in) :: Cadena
           integer, intent(inout) :: indice
           character(len=:), allocatable :: lexema
           integer :: in
-      
+          integer :: control = 0
         
       if (opciones(1))then
       
       
-      if ("hola" == Cadena(indice:indice + 3) .and. len(Cadena) == len("hola")) then
+      if ("hola" == Cadena(indice:indice + 3) .and. caso(1))then
           allocate( character(len=4) :: lexema)
           lexema = Cadena(indice:indice + 3)
           indice = indice + 4
+          caso(1) = .false.
+          control = control+1
           return
       end if
       
       
-      opciones(1) = .false.
+
       
+      if ("bebe" == Cadena(indice:indice + 3) .and. caso(2))then
+          allocate( character(len=4) :: lexema)
+          lexema = Cadena(indice:indice + 3)
+          indice = indice + 4
+          caso(2) = .false.
+          control = control+1
+          return
       end if
       
       
+      if (control == 2-0){
+      }else{
+      opciones(1) = .false.
+      }
+      
+      
+      end if  
+
+
+
+
+
+
 
       if (opciones(2))then
       
       
-      if ("hola1" == Cadena(indice:indice + 4) .and. len(Cadena) == len("hola1")) then
-          allocate( character(len=5) :: lexema)
-          lexema = Cadena(indice:indice + 4)
-          indice = indice + 5
+      if ("tu" == Cadena(indice:indice + 1) .and. caso(3))then
+          allocate( character(len=2) :: lexema)
+          lexema = Cadena(indice:indice + 1)
+          indice = indice + 2
+          caso(3) = .false.
+          return
+      end if
+      
+      
+
+      
+      if ("gustas" == Cadena(indice:indice + 5) .and. caso(4))then
+          allocate( character(len=6) :: lexema)
+          lexema = Cadena(indice:indice + 5)
+          indice = indice + 6
+          caso(4) = .false.
           return
       end if
       
       
       opciones(2) = .false.
-      
-      end if
+      end if  
       
        
     
       lexema = "ERROR"
-      END function hu
+      END function hola
               
 
             ! Función para convertir una cadena de texto a mayúsculas

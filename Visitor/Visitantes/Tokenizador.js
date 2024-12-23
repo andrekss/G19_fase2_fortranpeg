@@ -6,24 +6,27 @@ class TokenizadorVisitante extends Visitor {
   constructor(){
     super();
     this.tamaño_Concatenado=0;
+    this.Orden_Concatenacion = 0;
   }
   Generador_Tokens(gramaticas){
 
     return `
       module parser
-      module parser
         IMPLICIT NONE ! Desactiva la asignación implicita de las variables
+
+        !integer :: tamaño = 100
+        logical, dimension(100) :: opciones = .true. ! control de or
+        logical, dimension(100) :: caso = .true.  ! control concatenacion
         contains
 
       subroutine parse(input)
         integer :: cursor = 1
         character(len=:), intent(inout), allocatable :: input
-        do while (input /= "EOF" .and. input /= "ERROR")
-          input = nextsym(input, cursor)
-          print *, input
+        character(len=:), allocatable :: lexema
+        do while (lexema /= "EOF" .and. lexema /= "ERROR")
+          lexema = nextsym(input, cursor)
+          print *, lexema
         end do
-
-
       end subroutine parse
 
         function nextsym(Cadena, indice) result(lexema)
@@ -60,7 +63,6 @@ class TokenizadorVisitante extends Visitor {
     end function ToUpperCase
 
       END module parser
-      END module parser
             `;
     }
     // Reglas
@@ -72,6 +74,8 @@ class TokenizadorVisitante extends Visitor {
           integer, intent(inout) :: indice
           character(len=:), allocatable :: lexema
           integer :: in
+          integer :: control = 0
+
       ${Regla.expresion.accept(this)}
       lexema = "ERROR"
       END function ${Regla.id}
@@ -80,17 +84,33 @@ class TokenizadorVisitante extends Visitor {
 
 
     VisitarOr(Regla) { // Una produccion
-
       return `
-        ${Regla.expresion.map((expr) =>expr.accept(this)).join('\n')} 
+        ${Regla.expresion.map((expr) =>expr.accept(this)
+        ).join('\n')} 
     `;
+
+
       //return Regla.expresion.map((expr) => expr.accept(this)).join('\n');
     }    
 
     VisitarUnion(Regla){ // Concatenaciones
 
+
+      this.tamaño_Concatenado++;
+      let cierre = this.tamaño_Concatenado;
+      let inicio = this.Orden_Concatenacion;
       return `
+      if (opciones(${this.tamaño_Concatenado}))then
       ${Regla.expresion.map((expr) => expr.accept(this)).join('\n')}
+      opciones(${cierre}) = .false.
+      end if  
+          if (control == ${this.Orden_Concatenacion}-${inicio+1})then
+            lexema = "ERROR"
+            return
+          else
+           
+          end if
+      
       `
     }
 
@@ -122,12 +142,14 @@ class TokenizadorVisitante extends Visitor {
         cierre = ""
       }
 
+      this.Orden_Concatenacion++;
           //if (Cadena(indice:indice + 3) == "hola" .and. len(Cadena) == len("hola")) 
       return `
-      if (${funcion}"${Regla.Literal}"${cierre} == ${funcion}Cadena(indice:indice + ${Regla.Literal.length - 1})${cierre} .and. len(Cadena) == len("${Regla.Literal}")) then
+      if (${funcion}"${Regla.Literal}"${cierre} == ${funcion}Cadena(indice:indice + ${Regla.Literal.length - 1})${cierre} .and. caso(${this.Orden_Concatenacion})) then
           allocate( character(len=${Regla.Literal.length}) :: lexema)
           lexema = Cadena(indice:indice + ${Regla.Literal.length - 1})
           indice = indice + ${Regla.Literal.length}
+          caso(${this.Orden_Concatenacion}) = .false.
           return
       end if
       `;
