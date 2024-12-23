@@ -11,7 +11,6 @@ class TokenizadorVisitante extends Visitor {
 
     return `
       module parser
-      module parser
         IMPLICIT NONE ! Desactiva la asignación implicita de las variables
         contains
 
@@ -59,7 +58,6 @@ class TokenizadorVisitante extends Visitor {
         end do
     end function ToUpperCase
 
-      END module parser
       END module parser
             `;
     }
@@ -175,7 +173,7 @@ class TokenizadorVisitante extends Visitor {
 
         return `
         if (Cadena(indice:indice) >= "${Regla.inicio}" .and. Cadena(indice:indice) <= "${Regla.fin}") then
-            lexema = Cadena(indice:inndice)
+            lexema = Cadena(indice:indice)
             indice = in + 1
             return
         end if
@@ -185,6 +183,16 @@ class TokenizadorVisitante extends Visitor {
     VisitarContenido(Regla){
       console.log("carmen");
       console.log(Regla);
+      return `
+      
+      if (${funcion}"${Regla.Literal}"${cierre} == ${funcion}Cadena(indice:indice + ${Regla.Literal.length - 1})${cierre} .and. len(Cadena) == len("${Regla.Literal}")) then
+          allocate( character(len=${Regla.Literal.length}) :: lexema)
+          lexema = Cadena(indice:indice + ${Regla.Literal.length - 1})
+          indice = indice + ${Regla.Literal.length}
+          return
+      end if
+      `;
+
     }
 
     VisitarPunto(Regla){
