@@ -198,7 +198,11 @@ class TokenizadorVisitante extends Visitor {
         return `
         if (Cadena(indice:indice) >= "${Regla.inicio}" .and. Cadena(indice:indice) <= "${Regla.fin}") then
             lexema = Cadena(indice:indice)
+<<<<<<< HEAD
             indice = indice + 1
+=======
+            indice = in + 1
+>>>>>>> 503e97e (more changes)
             return
         end if
             `;
