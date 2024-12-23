@@ -1,5 +1,5 @@
 import { Visitor } from "../Visitante.js";
-import { Rango } from "../Elementos/Reglas.js";
+import { Contenido, Rango } from "../Elementos/Reglas.js";
 
 class TokenizadorVisitante extends Visitor {
 
@@ -157,6 +157,10 @@ class TokenizadorVisitante extends Visitor {
           .filter((Regla) => Regla instanceof Rango)
           .map((range) => range.accept(this))
           .join('\n')}
+      ${Regla.Rango
+          .filter((Regla) => Regla instanceof Contenido)
+          .map(range => range.accept(this))
+          .join('\n')}
           `;
     }
 
@@ -168,12 +172,17 @@ class TokenizadorVisitante extends Visitor {
         `;*/
 
         return `
-        if (Cadena(in:in) >= "${Regla.inicio}" .and. Cadena(in:in) <= "${Regla.fin}") then
-            lexema = Cadena(indice:in)
+        if (Cadena(indice:indice) >= "${Regla.inicio}" .and. Cadena(indice:indice) <= "${Regla.fin}") then
+            lexema = Cadena(indice:inndice)
             indice = in + 1
             return
         end if
             `;
+    }
+
+    VisitarContenido(Regla){
+      console.log("carmen");
+      console.log(Regla);
     }
 
     VisitarPunto(Regla){
