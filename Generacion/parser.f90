@@ -20,7 +20,6 @@
           character(len=:), allocatable :: lexema
           integer :: in
           INTEGER :: opcion
-          opcion = 1 ! Iniciamos con la primer instruccion del or
 
           if (indice > len(Cadena)) then
             allocate( character(len=3) :: lexema )
@@ -38,30 +37,23 @@
           integer, intent(inout) :: indice
           character(len=:), allocatable :: lexema
           integer :: in
-          INTEGER :: opcion
-          opcion = 1 ! Iniciamos con la primer instruccion del or
-
       
-      DO WHILE (.true.)
-        SELECT CASE(opcion)
-          CASE (1) 
+        
+      ! opcion del or
+      if (.true.) then
       
-      if ("tengo frio" == Cadena(indice:indice + 9) .and. len(Cadena) == len("tengo frio")) then
-          allocate( character(len=10) :: lexema)
-          lexema = Cadena(indice:indice + 9)
-          indice = indice + 10
+      
+      if ("ever" == Cadena(indice:indice + 3) .and. len(Cadena) == len("ever")) then
+          allocate( character(len=4) :: lexema)
+          lexema = Cadena(indice:indice + 3)
+          indice = indice + 4
           return
       end if
       
+      
+      end if
        
-          case default
-            lexema = "ERROR"
-            return
-        END SELECT
-        opcion = opcion+1
-      END DO  
     
-
       lexema = "ERROR"
       END function hola
               

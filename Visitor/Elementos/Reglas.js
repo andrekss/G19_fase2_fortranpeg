@@ -171,4 +171,4 @@ class Grupo extends Regla{
     }
 }
 
-export {Produccion, Or, Union, Varios, Etiqueta, Expresion, Rango, Literales, Corchete, Punto, Eof,Identificador, Grupo};
+export {Produccion, Or, Union, Varios, Etiqueta, Expresion, Rango, Literales, Corchete, Punto, Eof,Identificador, Grupo, Contenido};
