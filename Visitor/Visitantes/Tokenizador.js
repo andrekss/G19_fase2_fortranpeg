@@ -11,6 +11,7 @@ class TokenizadorVisitante extends Visitor {
 
     return `
       module parser
+      module parser
         IMPLICIT NONE ! Desactiva la asignación implicita de las variables
         contains
 
@@ -30,7 +31,6 @@ class TokenizadorVisitante extends Visitor {
           integer, intent(inout) :: indice
           character(len=:), allocatable :: lexema
           integer :: in
-          INTEGER :: opcion
 
           if (indice > len(Cadena)) then
             allocate( character(len=3) :: lexema )
@@ -60,6 +60,7 @@ class TokenizadorVisitante extends Visitor {
     end function ToUpperCase
 
       END module parser
+      END module parser
             `;
     }
     // Reglas
@@ -81,7 +82,7 @@ class TokenizadorVisitante extends Visitor {
     VisitarOr(Regla) { // Una produccion
 
       return `
-        ${Regla.expresion.map((expr) => expr.accept(this)).join('\n')} 
+        ${Regla.expresion.map((expr) =>expr.accept(this)).join('\n')} 
     `;
       //return Regla.expresion.map((expr) => expr.accept(this)).join('\n');
     }    
@@ -89,12 +90,8 @@ class TokenizadorVisitante extends Visitor {
     VisitarUnion(Regla){ // Concatenaciones
 
       return `
-      ! opcion del or
-      if (.true.) then
       ${Regla.expresion.map((expr) => expr.accept(this)).join('\n')}
-      end if
       `
-
     }
 
     // Prefijos
