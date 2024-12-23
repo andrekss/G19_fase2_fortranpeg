@@ -15,7 +15,11 @@
     import { errores } from '../index.js'
     
     // Importaciones Visitor hijos de regla
+<<<<<<< HEAD
     import { Produccion, Or, Union, Varios, Etiqueta, Expresion, Literales, Rango, Corchete, Punto, Eof } from "../Visitor/Elementos/Reglas.js";
+=======
+    import { Produccion, Or, Union, Varios, Etiqueta, Expresion, Literales, Rango, Corchete, Punto, Eof, Identificador } from "../Visitor/Elementos/Reglas.js";
+>>>>>>> 9c76848c7d2ba7d6eb8e0fe8797baf83e2693bc8
 
 function peg$subclass(child, parent) {
   function C() { this.constructor = child; }
@@ -288,12 +292,17 @@ function peg$parse(input, options) {
   var peg$f4 = function(a, exp, cont) { return new Expresion(a, exp, cont)};
   var peg$f5 = function(pluck, id, varios) { return new Etiqueta(pluck, id, varios) };
   var peg$f6 = function(pre) { return new Varios(pre) };
-  var peg$f7 = function(exp) { usos.push(exp); return exp; };
+  var peg$f7 = function(exp) { usos.push(exp); return new Identificador(exp); };
   var peg$f8 = function(exp, caso) { return new Literales(exp.replace(/['"]/g, ''),caso);};
   var peg$f9 = function(exp) { return exp; };
   var peg$f10 = function(exp, caso) { return new Corchete(exp, caso); };
+<<<<<<< HEAD
   var peg$f11 = function(exp) { return new Eof(); };
   var peg$f12 = function(exp) { return new Punto(); };
+=======
+  var peg$f11 = function(exp) { return new Punto(); };
+  var peg$f12 = function(exp) { return new Eof(); };
+>>>>>>> 9c76848c7d2ba7d6eb8e0fe8797baf83e2693bc8
   var peg$f13 = function(contenido) {
         return contenido;
     };

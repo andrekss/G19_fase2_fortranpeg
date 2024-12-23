@@ -5,6 +5,7 @@ class TokenizadorVisitante extends Visitor {
 
   constructor(){
     super();
+    this.tamaño_Concatenado=0;
   }
   Generador_Tokens(gramaticas){
 
@@ -20,7 +21,6 @@ class TokenizadorVisitante extends Visitor {
           character(len=:), allocatable :: lexema
           integer :: in
           INTEGER :: opcion
-          opcion = 1 ! Iniciamos con la primer instruccion del or
 
           if (indice > len(Cadena)) then
             allocate( character(len=3) :: lexema )
@@ -61,11 +61,7 @@ class TokenizadorVisitante extends Visitor {
           integer, intent(inout) :: indice
           character(len=:), allocatable :: lexema
           integer :: in
-          INTEGER :: opcion
-          opcion = 1 ! Iniciamos con la primer instruccion del or
-
       ${Regla.expresion.accept(this)}
-
       lexema = "ERROR"
       END function ${Regla.id}
       `
@@ -73,22 +69,22 @@ class TokenizadorVisitante extends Visitor {
 
 
     VisitarOr(Regla) { // Una produccion
+
       return `
-      DO WHILE (.true.)
-        SELECT CASE(opcion)
-          ${Regla.expresion.map((expr, caso) => `CASE (${caso + 1}) ${expr.accept(this)}`).join('\n')} 
-          case default
-            lexema = "ERROR"
-            return
-        END SELECT
-        opcion = opcion+1
-      END DO  
+        ${Regla.expresion.map((expr) => expr.accept(this)).join('\n')} 
     `;
       //return Regla.expresion.map((expr) => expr.accept(this)).join('\n');
     }    
 
     VisitarUnion(Regla){ // Concatenaciones
-      return Regla.expresion.map((expr) => expr.accept(this)).join('\n');
+
+      return `
+      ! opcion del or
+      if (.true.) then
+      ${Regla.expresion.map((expr) => expr.accept(this)).join('\n')}
+      end if
+      `
+
     }
 
     // Prefijos
@@ -105,7 +101,6 @@ class TokenizadorVisitante extends Visitor {
       return `
       ${Regla.expresion.accept(this)}
       `
-      
     }
     
     // Expresiones
@@ -209,6 +204,19 @@ class TokenizadorVisitante extends Visitor {
           return
         end if
       `;
+    }
+
+    VisitarIdentificador(Regla){
+      return`
+      lexema = ${Regla.id}(Cadena, indice)
+      return
+      `;
+    }
+
+    VisitarGrupos(Regla){
+
+      return Regla.expresion.accept(this); // or
+
     }
 
 }
