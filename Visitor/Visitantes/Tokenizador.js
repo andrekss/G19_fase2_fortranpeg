@@ -188,7 +188,7 @@ class TokenizadorVisitante extends Visitor {
           `;
     }
 
-    VisitarRango(Regla) {
+     VisitarRango(Regla) {
         /*return `
           if ( IACHAR(Cadena) >= IACHAR(${Regla.inicio}) .and. IACHAR(c) <= IACHAR(${Regla.fin}) ) then
             print *, "Es un dígito (opción B)."
