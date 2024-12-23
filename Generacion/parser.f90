@@ -5,7 +5,6 @@
         !integer :: tamaño = 100
         logical, dimension(100) :: opciones = .true. ! control de or
         logical, dimension(100) :: caso = .true.  ! control concatenacion
-        integer :: control = 0
         contains
 
       subroutine parse(input)
@@ -30,191 +29,44 @@
             return
           end if
 
-          lexema = StructProp(Cadena, indice)  ! produccion inicial
+          lexema = hora(Cadena, indice)  ! produccion inicial
           return
         END function Nextsym
      
           
-      function StructProp(Cadena, indice) result(lexema)
+      function hora(Cadena, indice) result(lexema)
           character(len=*), intent(in) :: Cadena
           integer, intent(inout) :: indice
           character(len=:), allocatable :: lexema
           integer :: in
+          integer :: control = 0
 
       
         
       if (opciones(1))then
       
       
-      lexema = Identificador(Cadena, indice)
-      return
-      
-      
-
-      
-      lexema = _(Cadena, indice)
-      return
-      
-      
-
-      
-      if (":" == Cadena(indice:indice + 0) .and. caso(1)) then
-          allocate( character(len=1) :: lexema)
-          lexema = Cadena(indice:indice + 0)
-          indice = indice + 1
+      if (ToUpperCase("ypu") == ToUpperCase(Cadena(indice:indice + 2)) .and. caso(1)) then
+          allocate( character(len=3) :: lexema)
+          lexema = Cadena(indice:indice + 2)
+          indice = indice + 3
           caso(1) = .false.
-          control = control + 1
           return
       end if
       
       
-
-      
-      lexema = _(Cadena, indice)
-      return
-      
-      
-
-      
-      lexema = Expresion(Cadena, indice)
-      return
-      
-      
-
-          if (control == 1-0)then
-            lexema = "ERROR"
-            return
-          else
-           opciones(1) = .false.
-           control = 0
-          end if
-      
+      opciones(1) = .false.
       end if  
-
-      
-       
-    
-      lexema = "ERROR"
-      END function StructProp
-      
-
-      function Identificador(Cadena, indice) result(lexema)
-          character(len=*), intent(in) :: Cadena
-          integer, intent(inout) :: indice
-          character(len=:), allocatable :: lexema
-          integer :: in
-
-      
-        
-      if (opciones(2))then
-      
-      
-      in = indice
-      
-      
-        if (Cadena(indice:indice) >= "a" .and. Cadena(indice:indice) <= "z") then
-            lexema = Cadena(indice:inndice)
-            indice = in + 1
-            return
-        end if
-            
-      
-          
-      
-
           if (control == 1-1)then
             lexema = "ERROR"
             return
-          else
-           opciones(2) = .false.
-           control = 0
-          end if
-      
-      end if  
-
-      
-       
-    
-      lexema = "ERROR"
-      END function Identificador
-      
-
-      function _(Cadena, indice) result(lexema)
-          character(len=*), intent(in) :: Cadena
-          integer, intent(inout) :: indice
-          character(len=:), allocatable :: lexema
-          integer :: in
-
-      
-        
-      if (opciones(3))then
-      
-      
-      if ("si" == Cadena(indice:indice + 1) .and. caso(2)) then
-          allocate( character(len=2) :: lexema)
-          lexema = Cadena(indice:indice + 1)
-          indice = indice + 2
-          caso(2) = .false.
-          control = control + 1
-          return
+          else     
       end if
       
-      
-
-          if (control == 2-1)then
-            lexema = "ERROR"
-            return
-          else
-           opciones(3) = .false.
-           control = 0
-          end if
-      
-      end if  
-
-      
        
     
       lexema = "ERROR"
-      END function _
-      
-
-      function Expresion(Cadena, indice) result(lexema)
-          character(len=*), intent(in) :: Cadena
-          integer, intent(inout) :: indice
-          character(len=:), allocatable :: lexema
-          integer :: in
-
-      
-        
-      if (opciones(4))then
-      
-      
-      if ("5" == Cadena(indice:indice + 0) .and. caso(3)) then
-          allocate( character(len=1) :: lexema)
-          lexema = Cadena(indice:indice + 0)
-          indice = indice + 1
-          caso(3) = .false.
-          control = control + 1
-          return
-      end if
-      
-      
-
-          if (control == 3-2)then
-            lexema = "ERROR"
-            return
-          else
-           opciones(4) = .false.
-           control = 0
-          end if
-      
-      end if  
-
-      
-       
-    
-      lexema = "ERROR"
-      END function Expresion
+      END function hora
               
 
             ! Función para convertir una cadena de texto a mayúsculas

@@ -17,6 +17,7 @@ class TokenizadorVisitante extends Visitor {
         !integer :: tamaño = 100
         logical, dimension(100) :: opciones = .true. ! control de or
         logical, dimension(100) :: caso = .true.  ! control concatenacion
+        integer :: control = 0
         contains
 
       subroutine parse(input)
@@ -74,7 +75,6 @@ class TokenizadorVisitante extends Visitor {
           integer, intent(inout) :: indice
           character(len=:), allocatable :: lexema
           integer :: in
-          integer :: control = 0
 
       ${Regla.expresion.accept(this)}
       lexema = "ERROR"
@@ -102,15 +102,16 @@ class TokenizadorVisitante extends Visitor {
       return `
       if (opciones(${this.tamaño_Concatenado}))then
       ${Regla.expresion.map((expr) => expr.accept(this)).join('\n')}
-      opciones(${cierre}) = .false.
-      end if  
-          if (control == ${this.Orden_Concatenacion}-${inicio+1})then
+
+          if (control == ${this.Orden_Concatenacion}-${inicio})then
             lexema = "ERROR"
             return
           else
-           
+           opciones(${cierre}) = .false.
+           control = 0
           end if
       
+      end if  
       `
     }
 
@@ -150,6 +151,7 @@ class TokenizadorVisitante extends Visitor {
           lexema = Cadena(indice:indice + ${Regla.Literal.length - 1})
           indice = indice + ${Regla.Literal.length}
           caso(${this.Orden_Concatenacion}) = .false.
+          control = control + 1
           return
       end if
       `;
@@ -242,7 +244,7 @@ class TokenizadorVisitante extends Visitor {
     VisitarIdentificador(Regla){
       return`
       lexema = ${Regla.id}(Cadena, indice)
-      return
+      !return
       `;
     }
 
