@@ -198,7 +198,7 @@ class TokenizadorVisitante extends Visitor {
         return `
         if (Cadena(indice:indice) >= "${Regla.inicio}" .and. Cadena(indice:indice) <= "${Regla.fin}") then
             lexema = Cadena(indice:indice)
-            indice = in + 1
+            indice = indice + 1
             return
         end if
             `;

@@ -2,7 +2,7 @@
       module parser
         IMPLICIT NONE ! Desactiva la asignación implicita de las variables
 
-        !integer :: tamanho = 100
+        !integer :: tamaño = 100
         logical, dimension(100) :: opciones = .true. ! control de or
         logical, dimension(100) :: caso = .true.  ! control concatenacion
         contains
@@ -15,8 +15,6 @@
           lexema = nextsym(input, cursor)
           print *, lexema
         end do
-
-
       end subroutine parse
 
         function nextsym(Cadena, indice) result(lexema)
@@ -42,79 +40,53 @@
           character(len=:), allocatable :: lexema
           integer :: in
           integer :: control = 0
+
+      
         
+      if (opciones(1))then
       
       
-      in = indice
-      
-      
-        if (Cadena(indice:indice) >= "a" .and. Cadena(indice:indice) <= "z") then
-            lexema = Cadena(indice:indice)
-            indice = in + 1
-            return
-        end if
-            
-      if ("hola" == Cadena(indice:indice + 3) .and. caso(1))then
+      if ("amor" == Cadena(indice:indice + 3) .and. caso(1)) then
           allocate( character(len=4) :: lexema)
           lexema = Cadena(indice:indice + 3)
           indice = indice + 4
           caso(1) = .false.
-          control = control+1
           return
       end if
       
+    end if
       
-
-      
-      if ("bebe" == Cadena(indice:indice + 3) .and. caso(2))then
-          allocate( character(len=4) :: lexema)
-          lexema = Cadena(indice:indice + 3)
-          indice = indice + 4
-          caso(2) = .false.
-          control = control+1
-          return
-      end if
-      
-      
-      if (control == 2-0){
-      }else{
       opciones(1) = .false.
-      }
-      
-      
-      end if  
-
-
-
-
-
-
 
       if (opciones(2))then
       
       
-      if ("tu" == Cadena(indice:indice + 1) .and. caso(3))then
-          allocate( character(len=2) :: lexema)
-          lexema = Cadena(indice:indice + 1)
-          indice = indice + 2
+      if ("carmen" == Cadena(indice:indice + 5) .and. caso(2)) then
+          allocate( character(len=6) :: lexema)
+          lexema = Cadena(indice:indice + 5)
+          indice = indice + 6
+          caso(2) = .false.
+          return
+      end if
+      
+      
+      opciones(2) = .false.
+      
+    end if
+
+      if (opciones(3))then
+      
+      
+      if ("bella" == Cadena(indice:indice + 4) .and. caso(3)) then
+          allocate( character(len=5) :: lexema)
+          lexema = Cadena(indice:indice + 4)
+          indice = indice + 5
           caso(3) = .false.
           return
       end if
       
       
-
-      
-      if ("gustas" == Cadena(indice:indice + 5) .and. caso(4))then
-          allocate( character(len=6) :: lexema)
-          lexema = Cadena(indice:indice + 5)
-          indice = indice + 6
-          caso(4) = .false.
-          return
-      end if
-      
-      
-          
-      opciones(2) = .false.
+      opciones(3) = .false.
       end if  
       
        
