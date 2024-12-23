@@ -89,7 +89,7 @@ contenido
     = content:(@corchete / @texto)+ { return new Contenido(content); }
 
 corchete
-    = "[" content:contenido "]" { return content; t
+    = "[" content:contenido "]" { return content; }
 
 texto
     = text:[^\[\]]+ { return text;}

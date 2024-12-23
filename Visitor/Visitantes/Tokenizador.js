@@ -9,12 +9,22 @@ class TokenizadorVisitante extends Visitor {
   Generador_Tokens(gramaticas){
 
     return `
-      module Main
+      module parser
         IMPLICIT NONE ! Desactiva la asignación implicita de las variables
         contains
 
+      subroutine parse(input)
+        integer :: cursor = 1
+        character(len=:), intent(inout), allocatable :: input
+        do while (input /= "EOF" .and. input /= "ERROR")
+          input = nextsym(input, cursor)
+          print *, input
+        end do
 
-        function Nextsym(Cadena, indice) result(lexema)
+
+      end subroutine parse
+
+        function nextsym(Cadena, indice) result(lexema)
           character(len=*), intent(in) :: Cadena
           integer, intent(inout) :: indice
           character(len=:), allocatable :: lexema
@@ -49,7 +59,7 @@ class TokenizadorVisitante extends Visitor {
         end do
     end function ToUpperCase
 
-      END module Main
+      END module parser
             `;
     }
     // Reglas

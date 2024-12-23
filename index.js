@@ -40,7 +40,7 @@ document.addEventListener("DOMContentLoaded", function () {
         const cadena = tokenizador.Generador_Tokens(cst)
     
    
-        generarArchivo('gramatica.f90', cadena);
+        generarArchivo('parser.f90', cadena);
     });
 });
 
