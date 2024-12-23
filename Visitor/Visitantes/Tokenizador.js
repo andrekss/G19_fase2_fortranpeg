@@ -178,19 +178,24 @@ class TokenizadorVisitante extends Visitor {
 
     VisitarPunto(Regla){
       return `
-        ! Check if the current character is '.'
-        if (Cadena(in:in) == ".") then
-            ! Accept any single character as a wildcard
-            if (indice < len(Cadena)) then
-                allocate(character(len=1) :: lexema)
-                lexema = Cadena(in:in)  ! Return the wildcard character
-                indice = in + 1         ! Advance to the next character
-            else
-                allocate(character(len=3) :: lexema)
-                lexema = "EOF"          ! Handle case where no more characters exist
-            end if
-            return
+
+    ! Check if the current character exists in the range and is a single character
+    if (indice <= len(Cadena)) then
+        if (len(trim(Cadena)) == 1) then
+            allocate(character(len=1) :: lexema)
+            lexema = Cadena(indice:indice)  ! Return the single character
+            indice = indice + 1             ! Advance to the next character
+        else
+            ! If the current substring is not a single character
+            allocate(character(len=6) :: lexema)
+            lexema = "ERROR"                ! Mark as error
         end if
+        return
+    else
+        allocate(character(len=3) :: lexema)
+        lexema = "EOF"                      ! Handle case where no more characters exist
+        return
+    end if
       `
     }
 

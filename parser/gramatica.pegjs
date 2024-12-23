@@ -45,8 +45,8 @@ expresiones  =  exp:identificador          { usos.push(exp); return exp; }
                 / exp:$literales caso:"i"?  { return new Literales(exp.replace(/['"]/g, ''),caso);}
                 / "(" _ exp:opciones _ ")" { return exp; }
                 / exp:corchetes caso:"i"?  { return new Corchete(exp, caso); }
-                / exp:"."                  { return new Punto(); }
                 / exp:"!."                 { return new Eof(); }
+                / exp:"."                  { return new Punto(); }
 
 // conteo = "|" parteconteo _ (_ delimitador )? _ "|"
 

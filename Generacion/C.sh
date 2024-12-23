@@ -1,14 +1,14 @@
 #!/bin/bash
 
 # Compilar el módulo Generado.f90
-gfortran -c Generado.f90
+gfortran -c tokenizer.f90
 if [ $? -ne 0 ]; then
-    echo "Error al compilar Generado.f90"
+    echo "Error al compilar tokenizer.f90"
     exit 1
 fi
 
 # Compilar el programa principal parser.f90 y enlazarlo con el módulo Generado.o
-gfortran -o parser parser.f90 Generado.o
+gfortran -o parser parser.f90 tokenizer.o
 if [ $? -ne 0 ]; then
     echo "Error al compilar parser.f90"
     exit 1

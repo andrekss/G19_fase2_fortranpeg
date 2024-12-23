@@ -15,7 +15,7 @@
     import { errores } from '../index.js'
     
     // Importaciones Visitor hijos de regla
-    import { Produccion, Or, Union, Varios, Etiqueta, Expresion, Literales, Rango, Corchete } from "../Visitor/Elementos/Reglas.js";
+    import { Produccion, Or, Union, Varios, Etiqueta, Expresion, Literales, Rango, Corchete, Punto, Eof } from "../Visitor/Elementos/Reglas.js";
 
 function peg$subclass(child, parent) {
   function C() { this.constructor = child; }
@@ -197,8 +197,8 @@ function peg$parse(input, options) {
   var peg$c5 = "i";
   var peg$c6 = "(";
   var peg$c7 = ")";
-  var peg$c8 = ".";
-  var peg$c9 = "!.";
+  var peg$c8 = "!.";
+  var peg$c9 = ".";
   var peg$c10 = "|";
   var peg$c11 = "..";
   var peg$c12 = ",";
@@ -238,8 +238,8 @@ function peg$parse(input, options) {
   var peg$e7 = peg$literalExpectation("i", false);
   var peg$e8 = peg$literalExpectation("(", false);
   var peg$e9 = peg$literalExpectation(")", false);
-  var peg$e10 = peg$literalExpectation(".", false);
-  var peg$e11 = peg$literalExpectation("!.", false);
+  var peg$e10 = peg$literalExpectation("!.", false);
+  var peg$e11 = peg$literalExpectation(".", false);
   var peg$e12 = peg$literalExpectation("|", false);
   var peg$e13 = peg$literalExpectation("..", false);
   var peg$e14 = peg$literalExpectation(",", false);
@@ -292,8 +292,8 @@ function peg$parse(input, options) {
   var peg$f8 = function(exp, caso) { return new Literales(exp.replace(/['"]/g, ''),caso);};
   var peg$f9 = function(exp) { return exp; };
   var peg$f10 = function(exp, caso) { return new Corchete(exp, caso); };
-  var peg$f11 = function(exp) { };
-  var peg$f12 = function(exp) {  };
+  var peg$f11 = function(exp) { return new Eof(); };
+  var peg$f12 = function(exp) { return new Punto(); };
   var peg$f13 = function(contenido) {
         return contenido;
     };
@@ -928,9 +928,9 @@ function peg$parse(input, options) {
           }
           if (s0 === peg$FAILED) {
             s0 = peg$currPos;
-            if (input.charCodeAt(peg$currPos) === 46) {
+            if (input.substr(peg$currPos, 2) === peg$c8) {
               s1 = peg$c8;
-              peg$currPos++;
+              peg$currPos += 2;
             } else {
               s1 = peg$FAILED;
               if (peg$silentFails === 0) { peg$fail(peg$e10); }
@@ -942,9 +942,9 @@ function peg$parse(input, options) {
             s0 = s1;
             if (s0 === peg$FAILED) {
               s0 = peg$currPos;
-              if (input.substr(peg$currPos, 2) === peg$c9) {
+              if (input.charCodeAt(peg$currPos) === 46) {
                 s1 = peg$c9;
-                peg$currPos += 2;
+                peg$currPos++;
               } else {
                 s1 = peg$FAILED;
                 if (peg$silentFails === 0) { peg$fail(peg$e11); }

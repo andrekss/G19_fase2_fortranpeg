@@ -138,4 +138,4 @@ class Eof extends Regla {
 }
 
 
-export {Produccion, Or, Union, Varios, Etiqueta, Expresion, Rango, Literales, Corchete};
+export {Produccion, Or, Union, Varios, Etiqueta, Expresion, Rango, Literales, Corchete,Eof,Punto};

@@ -18,12 +18,12 @@
             return
           end if
 
-          lexema = km(Cadena, indice)  ! produccion inicial
+          lexema = hola(Cadena, indice)  ! produccion inicial
           return
         END function Nextsym
      
           
-      function km(Cadena, indice) result(lexema)
+      function hola(Cadena, indice) result(lexema)
           character(len=*), intent(in) :: Cadena
           integer, intent(inout) :: indice
           character(len=:), allocatable :: lexema
@@ -36,20 +36,32 @@
         SELECT CASE(opcion)
           CASE (1) 
       
-      if ("hola" == Cadena(indice:indice + 3) .and. len(Cadena) == len("hola")) then
-          allocate( character(len=4) :: lexema)
-          lexema = Cadena(indice:indice + 3)
-          indice = indice + 4
-          return
-      end if
+
+    ! Check if the current character exists in the range and is a single character
+    if (indice <= len(Cadena)) then
+        if (len(trim(Cadena)) == 1) then
+            allocate(character(len=1) :: lexema)
+            lexema = Cadena(indice:indice)  ! Return the single character
+            indice = indice + 1             ! Advance to the next character
+        else
+            ! If the current substring is not a single character
+            allocate(character(len=6) :: lexema)
+            lexema = "ERROR"                ! Mark as error
+        end if
+        return
+    else
+        allocate(character(len=3) :: lexema)
+        lexema = "EOF"                      ! Handle case where no more characters exist
+        return
+    end if
       
       
 CASE (2) 
       
-      if ("adios" == Cadena(indice:indice + 4) .and. len(Cadena) == len("adios")) then
-          allocate( character(len=5) :: lexema)
-          lexema = Cadena(indice:indice + 4)
-          indice = indice + 5
+      if ("hola" == Cadena(indice:indice + 3) .and. len(Cadena) == len("hola")) then
+          allocate( character(len=4) :: lexema)
+          lexema = Cadena(indice:indice + 3)
+          indice = indice + 4
           return
       end if
       
@@ -63,7 +75,7 @@ CASE (2)
     
 
       lexema = "ERROR"
-      END function km
+      END function hola
               
 
             ! Función para convertir una cadena de texto a mayúsculas
