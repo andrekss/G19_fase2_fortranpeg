@@ -22,3 +22,6 @@ gfortran Generado.f90 -o Generado
 final
 
 peggy -o gramatica1.js gramatica.pegjs
+
+
+
