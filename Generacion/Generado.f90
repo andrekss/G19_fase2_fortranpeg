@@ -10,7 +10,6 @@
           character(len=:), allocatable :: lexema
           integer :: in
           INTEGER :: opcion
-          opcion = 1 ! Iniciamos con la primer instruccion del or
 
           if (indice > len(Cadena)) then
             allocate( character(len=3) :: lexema )
@@ -18,23 +17,21 @@
             return
           end if
 
-          lexema = km(Cadena, indice)  ! produccion inicial
+          lexema = hola(Cadena, indice)  ! produccion inicial
           return
         END function Nextsym
      
           
-      function km(Cadena, indice) result(lexema)
+      function hola(Cadena, indice) result(lexema)
           character(len=*), intent(in) :: Cadena
           integer, intent(inout) :: indice
           character(len=:), allocatable :: lexema
           integer :: in
-          INTEGER :: opcion
-          opcion = 1 ! Iniciamos con la primer instruccion del or
-
       
-      DO WHILE (.true.)
-        SELECT CASE(opcion)
-          CASE (1) 
+        ! opcion del or
+        
+      if (.true.) then
+      
       
       if ("hola" == Cadena(indice:indice + 3) .and. len(Cadena) == len("hola")) then
           allocate( character(len=4) :: lexema)
@@ -44,26 +41,11 @@
       end if
       
       
-CASE (2) 
-      
-      if ("adios" == Cadena(indice:indice + 4) .and. len(Cadena) == len("adios")) then
-          allocate( character(len=5) :: lexema)
-          lexema = Cadena(indice:indice + 4)
-          indice = indice + 5
-          return
       end if
-      
        
-          case default
-            lexema = "ERROR"
-            return
-        END SELECT
-        opcion = opcion+1
-      END DO  
     
-
       lexema = "ERROR"
-      END function km
+      END function hola
               
 
             ! Función para convertir una cadena de texto a mayúsculas

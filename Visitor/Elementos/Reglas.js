@@ -137,5 +137,26 @@ class Eof extends Regla {
     }
 }
 
+class Identificador extends Regla{
+    constructor(id){
+        super();
+        this.id = id;
+    }
 
-export {Produccion, Or, Union, Varios, Etiqueta, Expresion, Rango, Literales, Corchete};
+    accept(visitor){
+        return visitor.VisitarIdentificador(this);
+    }
+}
+
+
+class Grupo extends Regla{
+    constructor(expresion){
+        this.expresion = expresion;
+    }
+
+    accept(visitor){
+        return visitor.VisitarGrupos(this);
+    }
+}
+
+export {Produccion, Or, Union, Varios, Etiqueta, Expresion, Rango, Literales, Corchete, Punto, Eof,Identificador, Grupo};
