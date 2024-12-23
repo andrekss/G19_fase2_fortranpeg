@@ -3,13 +3,11 @@
         IMPLICIT NONE ! Desactiva la asignación implicita de las variables
         contains
 
-
         function Nextsym(Cadena, indice) result(lexema)
           character(len=*), intent(in) :: Cadena
           integer, intent(inout) :: indice
           character(len=:), allocatable :: lexema
           integer :: in
-          INTEGER :: opcion
 
           if (indice > len(Cadena)) then
             allocate( character(len=3) :: lexema )
@@ -28,9 +26,9 @@
           character(len=:), allocatable :: lexema
           integer :: in
       
-        ! opcion del or
         
-      if (.true.) then
+      logical,save :: opcion1 = .true.
+      if(opcion1)then
       
       
       if ("hola" == Cadena(indice:indice + 3) .and. len(Cadena) == len("hola")) then
@@ -41,6 +39,23 @@
       end if
       
       
+      opcion1 = .false.
+      end if
+      
+
+      logical,save :: opcion2 = .true.
+      if(opcion2)then
+      
+      
+      if ("mundo" == Cadena(indice:indice + 4) .and. len(Cadena) == len("mundo")) then
+          allocate( character(len=5) :: lexema)
+          lexema = Cadena(indice:indice + 4)
+          indice = indice + 5
+          return
+      end if
+      
+      
+      opcion2 = .false.
       end if
        
     
