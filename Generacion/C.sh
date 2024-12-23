@@ -21,4 +21,4 @@ fi
 
 # Ejecutar el ejecutable generado
 echo "Ejecutando el programa..."
-./test ever.txt
+./test entrada.txt

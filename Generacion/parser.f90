@@ -5,6 +5,7 @@
         !integer :: tamaño = 100
         logical, dimension(100) :: opciones = .true. ! control de or
         logical, dimension(100) :: caso = .true.  ! control concatenacion
+        integer :: control = 0
         contains
 
       subroutine parse(input)
@@ -29,12 +30,12 @@
             return
           end if
 
-          lexema = hola(Cadena, indice)  ! produccion inicial
+          lexema = StructProp(Cadena, indice)  ! produccion inicial
           return
         END function Nextsym
      
           
-      function hola(Cadena, indice) result(lexema)
+      function StructProp(Cadena, indice) result(lexema)
           character(len=*), intent(in) :: Cadena
           integer, intent(inout) :: indice
           character(len=:), allocatable :: lexema
@@ -68,9 +69,25 @@
           caso(2) = .false.
           return
       end if
+      lexema = _(Cadena, indice)
+      return
+      
+      
+
+      
+      lexema = Expresion(Cadena, indice)
+      return
       
       
       opciones(2) = .false.
+
+          if (control == 1-0)then
+            lexema = "ERROR"
+            return
+          else
+           opciones(1) = .false.
+           control = 0
+          end if
       
     end if
 
@@ -82,17 +99,65 @@
           lexema = Cadena(indice:indice + 4)
           indice = indice + 5
           caso(3) = .false.
+      in = indice
+      
+      
+        if (Cadena(indice:indice) >= "a" .and. Cadena(indice:indice) <= "z") then
+            lexema = Cadena(indice:inndice)
+            indice = in + 1
+            return
+        end if
+            
+      
+          
+      
+
+          if (control == 1-1)then
+            lexema = "ERROR"
+            return
+          else
+           opciones(2) = .false.
+           control = 0
+          end if
+      
+      end if  
+
+      
+       
+    
+      lexema = "ERROR"
+      END function Identificador
+      
+
+      function _(Cadena, indice) result(lexema)
+          character(len=*), intent(in) :: Cadena
+          integer, intent(inout) :: indice
+          character(len=:), allocatable :: lexema
+          integer :: in
+
+      
+        
+      if (opciones(3))then
+      
+      
+      if ("si" == Cadena(indice:indice + 1) .and. caso(2)) then
+          allocate( character(len=2) :: lexema)
+          lexema = Cadena(indice:indice + 1)
+          indice = indice + 2
+          caso(2) = .false.
+          control = control + 1
           return
       end if
       
       
       opciones(3) = .false.
       end if  
+
       
        
     
       lexema = "ERROR"
-      END function hola
+      END function Expresion
               
 
             ! Función para convertir una cadena de texto a mayúsculas
