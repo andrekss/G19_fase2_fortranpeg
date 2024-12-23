@@ -1,6 +1,9 @@
 
       module parser
         IMPLICIT NONE ! Desactiva la asignación implicita de las variables
+
+        ! Declarar el arreglo global y persistente
+        logical, dimension(100) :: opciones = .true.
         contains
 
       subroutine parse(input)
@@ -10,8 +13,6 @@
           input = nextsym(input, cursor)
           print *, input
         end do
-
-
       end subroutine parse
 
         function nextsym(Cadena, indice) result(lexema)
@@ -19,7 +20,6 @@
           integer, intent(inout) :: indice
           character(len=:), allocatable :: lexema
           integer :: in
-          INTEGER :: opcion
 
           if (indice > len(Cadena)) then
             allocate( character(len=3) :: lexema )
@@ -27,23 +27,22 @@
             return
           end if
 
-          lexema = hola(Cadena, indice)  ! produccion inicial
+          lexema = hu(Cadena, indice)  ! produccion inicial
           return
         END function Nextsym
      
           
-      function hola(Cadena, indice) result(lexema)
+      function hu(Cadena, indice) result(lexema)
           character(len=*), intent(in) :: Cadena
           integer, intent(inout) :: indice
           character(len=:), allocatable :: lexema
           integer :: in
       
         
-      ! opcion del or
-      if (.true.) then
+      if (opciones(1))then
       
       
-      if ("ever" == Cadena(indice:indice + 3) .and. len(Cadena) == len("ever")) then
+      if ("hola" == Cadena(indice:indice + 3) .and. len(Cadena) == len("hola")) then
           allocate( character(len=4) :: lexema)
           lexema = Cadena(indice:indice + 3)
           indice = indice + 4
@@ -51,11 +50,31 @@
       end if
       
       
+      opciones(1) = .false.
+      
       end if
+      
+      
+
+      if (opciones(2))then
+      
+      
+      if ("hola1" == Cadena(indice:indice + 4) .and. len(Cadena) == len("hola1")) then
+          allocate( character(len=5) :: lexema)
+          lexema = Cadena(indice:indice + 4)
+          indice = indice + 5
+          return
+      end if
+      
+      
+      opciones(2) = .false.
+      
+      end if
+      
        
     
       lexema = "ERROR"
-      END function hola
+      END function hu
               
 
             ! Función para convertir una cadena de texto a mayúsculas
