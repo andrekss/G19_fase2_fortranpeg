@@ -92,10 +92,9 @@ class Rango extends Regla {
 }
 
 class Corchete extends Regla{
-    constructor(Rango, caso){
+    constructor(Rango){
         super()
         this.Rango = Rango;
-        this.caso = caso;
     }
 
     accept(visitor){
@@ -116,6 +115,19 @@ class Literales extends Regla {
         return visitor.VisitarLiterales(this);
     }
 }
+
+
+class Contenido extends Regla {
+    constructor(contenido){
+        super();
+        this.contenido = contenido;
+    }
+
+    accept(visitor){
+        return visitor.VisitarContenido(this);
+    }
+}
+
 
 class Punto extends Regla {
     constructor(){

@@ -1,5 +1,5 @@
 import { Visitor } from "../Visitante.js";
-import { Rango } from "../Elementos/Reglas.js";
+import { Contenido, Rango } from "../Elementos/Reglas.js";
 
 class TokenizadorVisitante extends Visitor {
 
@@ -10,12 +10,22 @@ class TokenizadorVisitante extends Visitor {
   Generador_Tokens(gramaticas){
 
     return `
-      module Main
+      module parser
         IMPLICIT NONE ! Desactiva la asignación implicita de las variables
         contains
 
+      subroutine parse(input)
+        integer :: cursor = 1
+        character(len=:), intent(inout), allocatable :: input
+        do while (input /= "EOF" .and. input /= "ERROR")
+          input = nextsym(input, cursor)
+          print *, input
+        end do
 
-        function Nextsym(Cadena, indice) result(lexema)
+
+      end subroutine parse
+
+        function nextsym(Cadena, indice) result(lexema)
           character(len=*), intent(in) :: Cadena
           integer, intent(inout) :: indice
           character(len=:), allocatable :: lexema
@@ -49,7 +59,7 @@ class TokenizadorVisitante extends Visitor {
         end do
     end function ToUpperCase
 
-      END module Main
+      END module parser
             `;
     }
     // Reglas
@@ -152,6 +162,10 @@ class TokenizadorVisitante extends Visitor {
           .filter((Regla) => Regla instanceof Rango)
           .map((range) => range.accept(this))
           .join('\n')}
+      ${Regla.Rango
+          .filter((Regla) => Regla instanceof Contenido)
+          .map(range => range.accept(this))
+          .join('\n')}
           `;
     }
 
@@ -163,12 +177,17 @@ class TokenizadorVisitante extends Visitor {
         `;*/
 
         return `
-        if (Cadena(in:in) >= "${Regla.inicio}" .and. Cadena(in:in) <= "${Regla.fin}") then
-            lexema = Cadena(indice:in)
+        if (Cadena(indice:indice) >= "${Regla.inicio}" .and. Cadena(indice:indice) <= "${Regla.fin}") then
+            lexema = Cadena(indice:inndice)
             indice = in + 1
             return
         end if
             `;
+    }
+
+    VisitarContenido(Regla){
+      console.log("carmen");
+      console.log(Regla);
     }
 
     VisitarPunto(Regla){

@@ -13,6 +13,7 @@ class Visitor {
 	VisitarCorchete(Regla){}
 	VisitarPunto(Regla){}
 	VisitarEof(Regla){}
+	VisitarContenido(Regla){}
 }
 
 export {Visitor};

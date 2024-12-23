@@ -10,7 +10,7 @@
     import { errores } from '../index.js'
     
     // Importaciones Visitor hijos de regla
-    import { Produccion, Or, Union, Varios, Etiqueta, Expresion, Literales, Rango, Corchete, Punto, Eof, Identificador, Grupo } from "../Visitor/Elementos/Reglas.js";
+    import { Produccion, Or, Union, Varios, Etiqueta, Expresion, Literales, Rango, Corchete, Punto, Eof, Identificador, Grupo, Contenido } from "../Visitor/Elementos/Reglas.js";
 }}
 
 gramatica = _ prods:producciones+ _ {   
@@ -64,8 +64,8 @@ conteo = "|" _ (numero / id:identificador) _ "|"
 
 // Regla principal que analiza corchetes con contenido
 corchetes
-    = "[" contenido:(@rango / contenido)+ "]" {
-        return contenido;
+    = "[" content:(@rango / @contenido)+ "]" {
+        return content;
     }
 
 // Regla para validar un rango como [A-Z]
@@ -77,7 +77,7 @@ rango
         }
        // return new Rango(inicio, fin);
 
-        return `${inicio}-${fin}`;//se debe crear la lista
+       return new Rango(inicio, fin)
     }
 
 // Regla para caracteres individuales
@@ -86,13 +86,13 @@ caracter
 
 // Coincide con cualquier contenido que no incluya "]"
 contenido
-    = (corchete / texto)+
+    = content:(@corchete / @texto)+ { return new Contenido(content); }
 
 corchete
-    = "[" contenido "]"
+    = "[" content:contenido "]" { return content; }
 
 texto
-    = [^\[\]]+
+    = text:[^\[\]]+ { return text;}
 
 literales = '"' cadena:(@stringDobleComilla)* '"'     { return cadena }
             / "'" cadena:(@stringSimpleComilla)* "'"  { return cadena }
