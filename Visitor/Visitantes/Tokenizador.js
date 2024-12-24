@@ -195,33 +195,62 @@ class TokenizadorVisitante extends Visitor {
           end if         
         `;*/
 
+        this.tamaño_Concatenado++;
+        let cierre = this.tamaño_Concatenado;
         return `
-        if (Cadena(indice:indice) >= "${Regla.inicio}" .and. Cadena(indice:indice) <= "${Regla.fin}") then
-            lexema = Cadena(indice:indice)
-<<<<<<< HEAD
-<<<<<<< HEAD
-            indice = indice + 1
-=======
-            indice = in + 1
->>>>>>> 503e97e (more changes)
-=======
-            indice = indice + 1
->>>>>>> 87ad3dd (testing list)
-            return
+        if (opciones(${this.tamaño_Concatenado})) then
+          if (Cadena(indice:indice) >= "${Regla.inicio}" .and. Cadena(indice:indice) <= "${Regla.fin}") then
+              lexema = Cadena(indice:indice)
+              indice = indice + 1
+              opciones(${cierre}) = .false.
+              return
+          end if
         end if
             `;
     }
 
     VisitarContenido(Regla){
-      console.log("carmen");
-      console.log(Regla);
+      this.tamaño_Concatenado++;
+      let cierre = this.tamaño_Concatenado;
+      console.log(Regla.contenido)
+
+      const replacements = {
+        "t": "\\t",
+        "\\": "\\\\",
+        "n": "\\n",
+        "r": "\\r"
+      }
+
+      for (let i = 0; i < Regla.contenido.length - -1; i++){
+        if (Regla.contenido[i] === "\\" && replacements[Regla.contenido[i+1]]){
+          Regla.contenido[i] = replacements[Regla.contenido[i+1]]
+          Regla.contenido.splice(i+1, 1);
+          i--;
+        }
+      }
+
+
+      let cadena = Regla.contenido.map((char) => `
+      if (opciones(${this.tamaño_Concatenado}))then
+        if ("${char}" == Cadena(indice:indice) .and. Cadena(indice:indice) <= "$") then
+            allocate( character(len=${Regla.contenido.length}) :: lexema)
+            lexema = Cadena(indice:indice + ${Regla.contenido.length - 1})
+            indice = indice + ${Regla.contenido.length}
+            opciones() = .false.
+            return
+        end if
+      end if
+      `);
+
       return `
-      
-      if (${funcion}"${Regla.Literal}"${cierre} == ${funcion}Cadena(indice:indice + ${Regla.Literal.length - 1})${cierre} .and. len(Cadena) == len("${Regla.Literal}")) then
-          allocate( character(len=${Regla.Literal.length}) :: lexema)
-          lexema = Cadena(indice:indice + ${Regla.Literal.length - 1})
-          indice = indice + ${Regla.Literal.length}
-          return
+      if (opciones(${this.tamaño_Concatenado}))then
+        if ("${Regla.Literal}" == Cadena(indice:indice) then
+            allocate( character(len=${Regla.contenido.length}) :: lexema)
+            lexema = Cadena(indice:indice + ${Regla.contenido.length - 1})
+            indice = indice + ${Regla.contenido.length}
+            opciones(${cierre}) = .false.
+            return
+        end if
       end if
       `;
 
